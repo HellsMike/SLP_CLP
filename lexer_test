@@ -1,0 +1,5 @@
+int a;
+void d;
+d = a;
+c = True;
+if True {};
