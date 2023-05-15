@@ -1,25 +1,26 @@
-import ast.*;
-import parser.*;
+package main;
+
+import java.io.FileInputStream;
 
 import org.antlr.v4.runtime.*;
 
-import java.io.FileInputStream;
+import util.SLPErrorHandler;
+import parser.*;
 
 public class Main {
    public static void main(String[] args) throws Exception {
       String filename = "lexer_test";
-      FileInputStream is = null;
+      CharStream charStream = null;
 
       try {
-         is = new FileInputStream(filename);
+         charStream = CharStreams.fromFileName(filename);
       } catch (Exception e) {
          System.out.println("Error during the opening of the file.");
          System.exit(1);
       }
 
       // Initialize parser
-      ANTLRInputStream input = new ANTLRInputStream(is);
-      SimpLanPlusLexer lexer = new SimpLanPlusLexer(input);
+      SimpLanPlusLexer lexer = new SimpLanPlusLexer(charStream);
       CommonTokenStream tokens = new CommonTokenStream(lexer);
       SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
 

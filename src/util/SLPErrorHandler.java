@@ -1,12 +1,12 @@
-package ast;
-
-import org.antlr.v4.runtime.*;
+package util;
 
 import java.io.*;
 import java.util.ArrayList;
 
+import org.antlr.v4.runtime.*;
+
 public class SLPErrorHandler extends BaseErrorListener {
-    private ArrayList<String> errorList;
+    private final ArrayList<String> errorList;
 
     public SLPErrorHandler() {
         this.errorList = new ArrayList<String>();
@@ -31,7 +31,7 @@ public class SLPErrorHandler extends BaseErrorListener {
 
     /**
      * Insert the error messages in a log file.
-     * @param filename
+     * @param filename - name of the file.
      */
     public void toLog(String filename) throws IOException {
         String logDirPath = System.getProperty("user.dir") + "/log";
@@ -39,7 +39,10 @@ public class SLPErrorHandler extends BaseErrorListener {
         // Create log directory if not exists
         File logDir = new File(logDirPath);
         if (!logDir.exists()) {
-            logDir.mkdir();
+            if(!logDir.mkdir()) {
+                System.out.println("Error during the creation of the log folder.");
+                System.exit(1);
+            }
         }
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(logDirPath + "/" + filename + ".log"));
