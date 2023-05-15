@@ -1,4 +1,4 @@
-package util;
+package utils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class SLPErrorHandler extends BaseErrorListener {
     }
 
     /**
-     * @return string with concatenated error messages.
+     * @return String with concatenated error messages.
      */
     @Override
     public String toString() {
@@ -31,7 +31,7 @@ public class SLPErrorHandler extends BaseErrorListener {
 
     /**
      * Insert the error messages in a log file.
-     * @param filename - name of the file.
+     * @param filename Name of the file.
      */
     public void toLog(String filename) throws IOException {
         String logDirPath = System.getProperty("user.dir") + "/log";
