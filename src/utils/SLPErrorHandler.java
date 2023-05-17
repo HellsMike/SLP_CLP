@@ -9,7 +9,7 @@ public class SLPErrorHandler extends BaseErrorListener {
     private final ArrayList<String> errorList;
 
     public SLPErrorHandler() {
-        this.errorList = new ArrayList<String>();
+        errorList = new ArrayList<String>();
     }
 
     /**
@@ -18,7 +18,7 @@ public class SLPErrorHandler extends BaseErrorListener {
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
                             String msg, RecognitionException e) {
-        this.errorList.add("Character " + charPositionInLine + " in line " + line + " generate an error: " + msg);
+        errorList.add("Character " + charPositionInLine + " in line " + line + " generate an error: " + msg);
     }
 
     /**
@@ -54,6 +54,6 @@ public class SLPErrorHandler extends BaseErrorListener {
      * @return Number of error evaluated.
      */
     public int errorNumber() {
-        return this.errorList.size();
+        return errorList.size();
     }
 }

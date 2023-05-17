@@ -13,9 +13,9 @@ public class STEntry {
      */
     private final int nestingLevel;
 
-    public STEntry(Type _type, int _nesting) {
-        this.type = _type;
-        this.nestingLevel = _nesting;
+    public STEntry(Type type, int nesting) {
+        this.type = type;
+        this.nestingLevel = nesting;
     }
 
     public Type getType() {

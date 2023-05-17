@@ -37,10 +37,10 @@ public class SymbolTable {
      */
     public void add (String id, Type type, int nestingLevel) {
         STEntry entry = new STEntry(type, nestingLevel);
-        int lastIndex = this.table.size() - 1;
-        HashMap<String,STEntry> scope = this.table.get(lastIndex);
+        int lastIndex = table.size() - 1;
+        HashMap<String,STEntry> scope = table.get(lastIndex);
         scope.put(id, entry);
-        this.table.set(lastIndex, scope);
+        table.set(lastIndex, scope);
     }
 
     /**
@@ -48,13 +48,13 @@ public class SymbolTable {
      * @param scope HashMap of the new scope.
      */
     public void newScope(HashMap<String,STEntry> scope) {
-        this.table.add(scope);
+        table.add(scope);
     }
 
     /**
      * Exits the current scope.
      */
     public void exitScope() {
-        this.table.remove(this.table.size() - 1);
+        table.remove(table.size() - 1);
     }
 }
