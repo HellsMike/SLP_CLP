@@ -1,21 +1,21 @@
 package ast.nodes;
 
 import ast.types.ErrorType;
-import ast.types.FunType;
+import ast.types.IntType;
 import ast.types.Type;
-import utils.STEntry;
 import utils.SemanticError;
 import utils.SymbolTable;
 
 import java.util.ArrayList;
 
-public class VarNode implements Node {
-    private final String id;
-    private STEntry entry;
-    private int nestingLevel;
+public abstract class ArithmeticOpNode implements Node {
+    protected String operation;
+    private final Node left;
+    private final Node right;
 
-    public VarNode(String id) {
-        this.id = id;
+    public ArithmeticOpNode(Node left, Node right) {
+        this.left = left;
+        this.right = right;
     }
 
     /**
@@ -28,11 +28,8 @@ public class VarNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
-        this.nestingLevel = nestingLevel;
-        STEntry entry = symbolTable.lookup(id);
-        if (entry == null)
-            errors.add(new SemanticError("Id " + id + " is not declared."));
-        else this.entry = entry;
+        errors.addAll(left.checkSemantics(symbolTable, nestingLevel));
+        errors.addAll(right.checkSemantics(symbolTable, nestingLevel));
         return errors;
     }
 
@@ -43,12 +40,13 @@ public class VarNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (entry.getType() instanceof FunType) {
-            ErrorType error = new ErrorType("Wrong usage of function identifier.");
+        if (left.typeCheck() instanceof IntType && right.typeCheck() instanceof IntType)
+            return new IntType();
+        else {
+            ErrorType error = new ErrorType("Type Error: Non integers in " + operation.toLowerCase() + " operation.");
             System.out.println(error);
             return error;
-        } else
-            return entry.getType();
+        }
     }
 
     /**
@@ -57,12 +55,10 @@ public class VarNode implements Node {
      * @return Code.
      */
     @Override
-    public String codeGeneration() {
-        return null;
-    }
+    public abstract String codeGeneration();
 
     @Override
-    public String toString(String string)  {
-        return string + "Id: " + id + " is at nest level " + entry.getNesting() + "\n";
+    public String toString(String string) {
+        return string + operation + "\n" + left.toString(string + "  ") + right.toString(string + "  ");
     }
 }
