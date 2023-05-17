@@ -1,11 +1,11 @@
 grammar SimpLanPlus ;
 
-prog   : exp
-       | (dec)+ (stm)* (exp)?
+prog   : exp                                                            #simpleProg
+       | (dec)+ (stm)* (exp)?                                           #complexProg
        ;
 
-dec    : type ID ';'
-       | type ID '(' ( param ( ',' param)* )? ')' '{' body '}'
+dec    : type ID ';'                                                    #varDec
+       | type ID '(' ( param ( ',' param)* )? ')' '{' body '}'          #funDec
        ;
 
 param  : type ID ;
@@ -18,21 +18,22 @@ type   : 'int'
        | 'void'
        ;
 
-stm    : ID '=' exp ';'
-       | ID '(' (exp (',' exp)* )? ')' ';'
-       | 'if' '(' exp ')' '{' (stm)+ '}' ('else' '{' (stm)+ '}')?
+stm    : ID '=' exp ';'                                                  #initStm
+       | ID '(' (exp (',' exp)* )? ')' ';'                               #funStm
+       | 'if' '(' exp ')' '{' (stm)+ '}' ('else' '{' (stm)+ '}')?        #ifStm
 	   ;
 
-exp    :  INTEGER | 'true' | 'false'
-       | ID
-       | '!' exp
-       | exp ('*' | '/') exp
-       | exp ('+' | '-') exp
-       | exp ('>' | '<' | '>=' | '<=' | '==') exp
-       | exp ('&&' | '||') exp
-       | 'if' '(' exp ')' '{' (stm)* exp '}' 'else' '{' (stm)* exp '}'
-       | '(' exp ')'
-       | ID '(' (exp (',' exp)* )? ')'
+exp    : INTEGER                                                         #intExp
+       | ( 'true' | 'false' )                                            #boolExp
+       | ID                                                              #varExp
+       | '!' exp                                                         #notExp
+       | exp ('*' | '/') exp                                             #extendedArithmeticExp
+       | exp ('+' | '-') exp                                             #baseArithmeticExp
+       | exp ('>' | '<' | '>=' | '<=' | '==') exp                        #realtionalExp
+       | exp ('&&' | '||') exp                                           #logicalExp
+       | 'if' '(' exp ')' '{' (stm)* exp '}' 'else' '{' (stm)* exp '}'   #ifExp
+       | '(' exp ')'                                                     #bracketsExp
+       | ID '(' (exp (',' exp)* )? ')'                                   #funExp
        ;
 
 /*------------------------------------------------------------------

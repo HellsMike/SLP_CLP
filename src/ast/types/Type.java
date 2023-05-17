@@ -1,10 +1,12 @@
-package ast;
+package ast.types;
 
 import java.util.ArrayList;
 
+import ast.Node;
 import utils.*;
 
-public class Type implements Node {
+public abstract class Type implements Node {
+    @Override
     public String toPrint(String string) {
         return string;
     }

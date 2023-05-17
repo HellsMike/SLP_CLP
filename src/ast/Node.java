@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
+import ast.types.Type;
 import utils.*;
 
 public interface Node {

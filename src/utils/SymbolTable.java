@@ -2,7 +2,7 @@ package utils;
 
 import java.util.*;
 
-import ast.Type;
+import ast.types.Type;
 
 public class SymbolTable {
     /**
