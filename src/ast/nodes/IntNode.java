@@ -1,5 +1,6 @@
-package ast;
+package ast.nodes;
 
+import ast.types.IntType;
 import ast.types.Type;
 import utils.SemanticError;
 import utils.SymbolTable;
@@ -7,7 +8,11 @@ import utils.SymbolTable;
 import java.util.ArrayList;
 
 public class IntNode implements Node {
-    private Integer value;
+    private final int value;
+
+    public IntNode (int value) {
+        this.value = value ;
+    }
 
     /**
      * Function invoked to check for semantic errors.
@@ -22,13 +27,13 @@ public class IntNode implements Node {
     }
 
     /**
-     * Type checking process.
+     * Determines the type of the token.
      *
      * @return Type class of the corresponding node type.
      */
     @Override
     public Type typeCheck() {
-        return null;
+        return new IntType();
     }
 
     /**
@@ -42,7 +47,7 @@ public class IntNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return null;
+    public String toString(String string) {
+        return string + value + "\n";
     }
 }

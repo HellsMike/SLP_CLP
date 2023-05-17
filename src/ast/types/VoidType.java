@@ -1,7 +1,8 @@
 package ast.types;
 
 public class VoidType extends Type {
-    public String toPrint(String string) {
+    @Override
+    public String toString(String string) {
         return string + "Void ";
     }
 }

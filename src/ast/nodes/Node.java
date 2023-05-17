@@ -1,13 +1,14 @@
-package ast;
-
-import java.util.ArrayList;
+package ast.nodes;
 
 import ast.types.Type;
 import utils.*;
 
+import java.util.ArrayList;
+
 public interface Node {
     /**
      * Function invoked to check for semantic errors.
+     *
      * @param symbolTable Symbol table to check in.
      * @param nestingLevel Level of scope the node is in.
      * @return List of semantic error.
@@ -15,16 +16,18 @@ public interface Node {
     ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel);
 
     /**
-     * Type checking process.
+     * Determines the type of the token.
+     *
      * @return Type class of the corresponding node type.
      */
     Type typeCheck();
 
     /**
      * Bytecode generation for interpreter.
+     *
      * @return Code.
      */
     String codeGeneration();
 
-    String toPrint(String string);
+    String toString(String string);
 }

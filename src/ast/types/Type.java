@@ -1,18 +1,17 @@
 package ast.types;
 
-import java.util.ArrayList;
-
-import ast.Node;
+import ast.nodes.Node;
 import utils.*;
+
+import java.util.ArrayList;
 
 public abstract class Type implements Node {
     @Override
-    public String toPrint(String string) {
-        return string;
-    }
+    public abstract String toString(String string);
 
     /**
      * DON'T USE! NOT IMPLEMENTED.
+     *
      * @param symbolTable Symbol table to check in.
      * @param nestingLevel Level of scope the node is in.
      * @return Null.
@@ -24,6 +23,7 @@ public abstract class Type implements Node {
 
     /**
      * DON'T USE! NOT IMPLEMENTED.
+     *
      * @return Null.
      */
     @Override
@@ -33,6 +33,7 @@ public abstract class Type implements Node {
 
     /**
      * DON'T USE! NOT IMPLEMENTED.
+     *
      * @return Empty string.
      */
     @Override
