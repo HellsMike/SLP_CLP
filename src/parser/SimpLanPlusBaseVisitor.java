@@ -101,14 +101,14 @@ public class SimpLanPlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfExp(SimpLanPlusParser.IfExpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArithmeticExp(SimpLanPlusParser.ArithmeticExpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExtendedArithmeticExp(SimpLanPlusParser.ExtendedArithmeticExpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfExp(SimpLanPlusParser.IfExpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -151,11 +151,4 @@ public class SimpLanPlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitIntExp(SimpLanPlusParser.IntExpContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitBaseArithmeticExp(SimpLanPlusParser.BaseArithmeticExpContext ctx) { return visitChildren(ctx); }
 }

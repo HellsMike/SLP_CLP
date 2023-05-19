@@ -145,6 +145,18 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 */
 	void exitRealtionalExp(SimpLanPlusParser.RealtionalExpContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code arithmeticExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterArithmeticExp(SimpLanPlusParser.ArithmeticExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arithmeticExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitArithmeticExp(SimpLanPlusParser.ArithmeticExpContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ifExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
 	 * @param ctx the parse tree
@@ -156,18 +168,6 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIfExp(SimpLanPlusParser.IfExpContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code extendedArithmeticExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void enterExtendedArithmeticExp(SimpLanPlusParser.ExtendedArithmeticExpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code extendedArithmeticExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void exitExtendedArithmeticExp(SimpLanPlusParser.ExtendedArithmeticExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code boolExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
@@ -240,16 +240,4 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIntExp(SimpLanPlusParser.IntExpContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code baseArithmeticExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void enterBaseArithmeticExp(SimpLanPlusParser.BaseArithmeticExpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code baseArithmeticExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void exitBaseArithmeticExp(SimpLanPlusParser.BaseArithmeticExpContext ctx);
 }

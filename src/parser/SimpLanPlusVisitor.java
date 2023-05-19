@@ -91,19 +91,19 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRealtionalExp(SimpLanPlusParser.RealtionalExpContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code arithmeticExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArithmeticExp(SimpLanPlusParser.ArithmeticExpContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ifExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitIfExp(SimpLanPlusParser.IfExpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code extendedArithmeticExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExtendedArithmeticExp(SimpLanPlusParser.ExtendedArithmeticExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code boolExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
@@ -146,11 +146,4 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIntExp(SimpLanPlusParser.IntExpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code baseArithmeticExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBaseArithmeticExp(SimpLanPlusParser.BaseArithmeticExpContext ctx);
 }

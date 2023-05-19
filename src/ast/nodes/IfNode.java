@@ -1,19 +1,20 @@
 package ast.nodes;
 
-import ast.types.BoolType;
-import ast.types.ErrorType;
 import ast.types.Type;
 import utils.SemanticError;
 import utils.SymbolTable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class NotNode implements Node {
-    private Node exp;
+public class IfNode implements Node {
+    private final Node condition;
+    private final Node thenBranch;
+    private final Node elseBranch;
 
-    public NotNode(Node exp) {
-        this.exp = exp;
+    public IfNode(Node condition, Node thenBranch, Node elseBranch) {
+        this.condition = condition;
+        this.thenBranch = thenBranch;
+        this.elseBranch = elseBranch;
     }
 
     /**
@@ -25,7 +26,11 @@ public class NotNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        return new ArrayList<>(exp.checkSemantics(symbolTable, nestingLevel));
+        ArrayList<SemanticError> errors = new ArrayList<>();
+        errors.addAll(condition.checkSemantics(symbolTable, nestingLevel));
+        errors.addAll(thenBranch.checkSemantics(symbolTable, nestingLevel));
+        errors.addAll(elseBranch.checkSemantics(symbolTable, nestingLevel));
+        return errors;
     }
 
     /**
@@ -35,13 +40,7 @@ public class NotNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (exp.typeCheck() instanceof BoolType)
-            return new BoolType();
-        else {
-            ErrorType error = new ErrorType("Type Error: Non booleans in not operation.");
-            System.out.println(error);
-            return error;
-        }
+        return null;
     }
 
     /**
@@ -56,6 +55,6 @@ public class NotNode implements Node {
 
     @Override
     public String toString(String string) {
-        return string + "Not\n" + exp.toString(string + "  ");
+        return null;
     }
 }

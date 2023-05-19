@@ -160,6 +160,18 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArithmeticExp(SimpLanPlusParser.ArithmeticExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArithmeticExp(SimpLanPlusParser.ArithmeticExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIfExp(SimpLanPlusParser.IfExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,18 +179,6 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIfExp(SimpLanPlusParser.IfExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExtendedArithmeticExp(SimpLanPlusParser.ExtendedArithmeticExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExtendedArithmeticExp(SimpLanPlusParser.ExtendedArithmeticExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -251,18 +251,6 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntExp(SimpLanPlusParser.IntExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBaseArithmeticExp(SimpLanPlusParser.BaseArithmeticExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBaseArithmeticExp(SimpLanPlusParser.BaseArithmeticExpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

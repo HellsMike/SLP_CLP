@@ -1,19 +1,20 @@
 package ast.nodes;
 
-import ast.types.BoolType;
 import ast.types.ErrorType;
 import ast.types.Type;
+import ast.types.VoidType;
 import utils.SemanticError;
 import utils.SymbolTable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class NotNode implements Node {
-    private Node exp;
+public class VarDeclarationNode implements Node {
+    private final String id;
+    private final Type type;
 
-    public NotNode(Node exp) {
-        this.exp = exp;
+    public VarDeclarationNode(String id, Type type) {
+        this.id = id;
+        this.type = type;
     }
 
     /**
@@ -25,7 +26,12 @@ public class NotNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        return new ArrayList<>(exp.checkSemantics(symbolTable, nestingLevel));
+        ArrayList<SemanticError> errors = new ArrayList<>();
+        if (symbolTable.lookup(id, nestingLevel) != null)
+            errors.add(new SemanticError("Variable with id " + id + " already declared."));
+        else
+            symbolTable.add(id, type, nestingLevel);
+        return errors;
     }
 
     /**
@@ -35,13 +41,12 @@ public class NotNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (exp.typeCheck() instanceof BoolType)
-            return new BoolType();
-        else {
-            ErrorType error = new ErrorType("Type Error: Non booleans in not operation.");
+        if (type instanceof VoidType) {
+            ErrorType error = new ErrorType("Type Error: illegal declaration of the variable " + id + ".");
             System.out.println(error);
             return error;
-        }
+        } else
+            return null;
     }
 
     /**
@@ -56,6 +61,6 @@ public class NotNode implements Node {
 
     @Override
     public String toString(String string) {
-        return string + "Not\n" + exp.toString(string + "  ");
+        return string + "Variable " + id + "\n";
     }
 }

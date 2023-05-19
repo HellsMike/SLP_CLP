@@ -8,7 +8,8 @@ dec    : type ID ';'                                                    #varDec
        | type ID '(' ( param ( ',' param)* )? ')' '{' body '}'          #funDec
        ;
 
-param  : type ID ;
+param  : type ID
+       ;
 
 body   : (dec)* (stm)* (exp)?
 	   ;
@@ -27,11 +28,10 @@ exp    : INTEGER                                                         #intExp
        | ( 'true' | 'false' )                                            #boolExp
        | ID                                                              #varExp
        | '!' exp                                                         #notExp
-       | exp ('*' | '/') exp                                             #extendedArithmeticExp
-       | exp ('+' | '-') exp                                             #baseArithmeticExp
-       | exp ('>' | '<' | '>=' | '<=' | '==') exp                        #realtionalExp
-       | exp ('&&' | '||') exp                                           #logicalExp
-       | 'if' '(' exp ')' '{' (stm)* exp '}' 'else' '{' (stm)* exp '}'   #ifExp
+       | left=exp ('*' | '/' | '+' | '-') right=exp                      #arithmeticExp
+       | left=exp ('>' | '<' | '>=' | '<=' | '==') right=exp             #realtionalExp
+       | left=exp ('&&' | '||') right=exp                                #logicalExp
+       | 'if' '(' cond=exp ')' '{' (thenStm=stm)* thenExp=exp '}' 'else' '{' (elseStm=stm)* elseExp=exp '}'   #ifExp
        | '(' exp ')'                                                     #bracketsExp
        | ID '(' (exp (',' exp)* )? ')'                                   #funExp
        ;

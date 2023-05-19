@@ -1,18 +1,15 @@
 package ast.nodes;
 
-import ast.types.BoolType;
-import ast.types.ErrorType;
 import ast.types.Type;
 import utils.SemanticError;
 import utils.SymbolTable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class NotNode implements Node {
-    private Node exp;
+public class ProgExpNode implements Node {
+    private final Node exp;
 
-    public NotNode(Node exp) {
+    public ProgExpNode(Node exp) {
         this.exp = exp;
     }
 
@@ -25,7 +22,7 @@ public class NotNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        return new ArrayList<>(exp.checkSemantics(symbolTable, nestingLevel));
+        return exp.checkSemantics(symbolTable, nestingLevel);
     }
 
     /**
@@ -35,13 +32,7 @@ public class NotNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (exp.typeCheck() instanceof BoolType)
-            return new BoolType();
-        else {
-            ErrorType error = new ErrorType("Type Error: Non booleans in not operation.");
-            System.out.println(error);
-            return error;
-        }
+        return exp.typeCheck();
     }
 
     /**
@@ -56,6 +47,6 @@ public class NotNode implements Node {
 
     @Override
     public String toString(String string) {
-        return string + "Not\n" + exp.toString(string + "  ");
+        return "Prog\n" + exp.toString("  ");
     }
 }

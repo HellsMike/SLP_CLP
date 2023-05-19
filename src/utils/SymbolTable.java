@@ -30,6 +30,18 @@ public class SymbolTable {
     }
 
     /**
+     * Check if param 'id' already exists in the symbol table. Optimized version that check in just one given scope.
+     *
+     * @param id Identifier to check for in the symbol table.
+     * @param nestingLevel Nesting level of the scope where to search.
+     * @return STEntry object if found, otherwise null.
+     */
+    public STEntry lookup(String id, int nestingLevel) {
+        HashMap<String, STEntry> scope = table.get(nestingLevel);
+        return scope.getOrDefault(id, null);
+    }
+
+    /**
      * Add a new entry to the symbol table.
      *
      * @param id Identifier of the entry.

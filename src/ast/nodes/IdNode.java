@@ -1,19 +1,21 @@
 package ast.nodes;
 
-import ast.types.BoolType;
 import ast.types.ErrorType;
+import ast.types.FunType;
 import ast.types.Type;
+import utils.STEntry;
 import utils.SemanticError;
 import utils.SymbolTable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class NotNode implements Node {
-    private Node exp;
+public class IdNode implements Node {
+    private final String id;
+    private STEntry entry;
+    private int nestingLevel;
 
-    public NotNode(Node exp) {
-        this.exp = exp;
+    public IdNode(String id) {
+        this.id = id;
     }
 
     /**
@@ -25,7 +27,13 @@ public class NotNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        return new ArrayList<>(exp.checkSemantics(symbolTable, nestingLevel));
+        ArrayList<SemanticError> errors = new ArrayList<>();
+        this.nestingLevel = nestingLevel;
+        STEntry entry = symbolTable.lookup(id);
+        if (entry == null)
+            errors.add(new SemanticError("Id " + id + " is not declared."));
+        else this.entry = entry;
+        return errors;
     }
 
     /**
@@ -35,13 +43,12 @@ public class NotNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (exp.typeCheck() instanceof BoolType)
-            return new BoolType();
-        else {
-            ErrorType error = new ErrorType("Type Error: Non booleans in not operation.");
+        if (entry.getType() instanceof FunType) {
+            ErrorType error = new ErrorType("Wrong usage of function identifier.");
             System.out.println(error);
             return error;
-        }
+        } else
+            return entry.getType();
     }
 
     /**
@@ -55,7 +62,7 @@ public class NotNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return string + "Not\n" + exp.toString(string + "  ");
+    public String toString(String string)  {
+        return string + "Id: " + id + " is at nest level " + entry.getNesting() + "\n";
     }
 }

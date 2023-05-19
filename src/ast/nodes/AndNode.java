@@ -6,16 +6,16 @@ import ast.types.Type;
 import utils.SemanticError;
 import utils.SymbolTable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class NotNode implements Node {
-    private Node exp;
+public class AndNode implements Node {
+    private final Node left;
+    private final Node right;
 
-    public NotNode(Node exp) {
-        this.exp = exp;
+    public AndNode(Node left, Node right) {
+        this.left = left;
+        this.right = right;
     }
-
     /**
      * Function invoked to check for semantic errors.
      *
@@ -25,7 +25,10 @@ public class NotNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        return new ArrayList<>(exp.checkSemantics(symbolTable, nestingLevel));
+        ArrayList<SemanticError> errors = new ArrayList<>();
+        errors.addAll(left.checkSemantics(symbolTable, nestingLevel));
+        errors.addAll(right.checkSemantics(symbolTable, nestingLevel));
+        return errors;
     }
 
     /**
@@ -35,10 +38,10 @@ public class NotNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (exp.typeCheck() instanceof BoolType)
+        if (left.typeCheck() instanceof BoolType && right.typeCheck() instanceof BoolType)
             return new BoolType();
         else {
-            ErrorType error = new ErrorType("Type Error: Non booleans in not operation.");
+            ErrorType error = new ErrorType("Type Error: Non booleans in and operation.");
             System.out.println(error);
             return error;
         }
@@ -56,6 +59,6 @@ public class NotNode implements Node {
 
     @Override
     public String toString(String string) {
-        return string + "Not\n" + exp.toString(string + "  ");
+        return string + "And\n" + left.toString(string + "  ") + right.toString(string + "  ");
     }
 }
