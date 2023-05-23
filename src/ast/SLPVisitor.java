@@ -44,12 +44,7 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitParam(SimpLanPlusParser.ParamContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Node visitBody(SimpLanPlusParser.BodyContext ctx) {
-        return null;
+        return new ParamNode(ctx.ID().getText(), (Type) this.visit(ctx.type()));
     }
 
     @Override
@@ -64,7 +59,7 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitInitStm(SimpLanPlusParser.InitStmContext ctx) {
-        return null;
+        return new VarInitNode(ctx.ID().getText(), this.visit(ctx.exp()));
     }
 
     @Override
