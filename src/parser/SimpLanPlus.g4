@@ -1,11 +1,11 @@
 grammar SimpLanPlus ;
 
-prog   : exp                                                            #simpleProg
-       | (dec)+ (stm)* (exp)?                                           #complexProg
+prog   : exp                                                                                             #simpleProg
+       | (dec)+ (stm)* (exp)?                                                                            #complexProg
        ;
 
-dec    : type ID ';'                                                    #varDec
-       | type ID '(' ( param ( ',' param)* )? ')' '{' body '}'          #funDec
+dec    : type ID ';'                                                                                     #varDec
+       | type ID '(' ( param ( ',' param)* )? ')' '{' body '}'                                           #funDec
        ;
 
 param  : type ID
@@ -19,21 +19,21 @@ type   : 'int'
        | 'void'
        ;
 
-stm    : ID '=' exp ';'                                                  #initStm
-       | ID '(' (exp (',' exp)* )? ')' ';'                               #funStm
-       | 'if' '(' exp ')' '{' (stm)+ '}' ('else' '{' (stm)+ '}')?        #ifStm
+stm    : ID '=' exp ';'                                                                                   #initStm
+       | ID '(' (exp (',' exp)* )? ')' ';'                                                                #funStm
+       | 'if' '(' exp ')' '{' (thenStm=stm)+ '}' ('else' '{' (elseStm=stm)+ '}')?                         #ifStm
 	   ;
 
-exp    : INTEGER                                                         #intExp
-       | ( 'true' | 'false' )                                            #boolExp
-       | ID                                                              #varExp
-       | '!' exp                                                         #notExp
-       | left=exp ('*' | '/' | '+' | '-') right=exp                      #arithmeticExp
-       | left=exp ('>' | '<' | '>=' | '<=' | '==') right=exp             #realtionalExp
-       | left=exp ('&&' | '||') right=exp                                #logicalExp
+exp    : INTEGER                                                                                          #intExp
+       | ( 'true' | 'false' )                                                                             #boolExp
+       | ID                                                                                               #varExp
+       | '!' exp                                                                                          #notExp
+       | left=exp (mul='*' | div='/' | plus='+' | minus='-') right=exp                                    #arithmeticExp
+       | left=exp (gr='>' | min='<' | greq='>=' | mineq='<=' | comp='==') right=exp                       #realtionalExp
+       | left=exp (and='&&' | or='||') right=exp                                                          #logicalExp
        | 'if' '(' cond=exp ')' '{' (thenStm=stm)* thenExp=exp '}' 'else' '{' (elseStm=stm)* elseExp=exp '}'   #ifExp
-       | '(' exp ')'                                                     #bracketsExp
-       | ID '(' (exp (',' exp)* )? ')'                                   #funExp
+       | '(' exp ')'                                                                                      #bracketsExp
+       | ID '(' (exp (',' exp)* )? ')'                                                                    #funExp
        ;
 
 /*------------------------------------------------------------------

@@ -6,16 +6,10 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
-public class IfNode implements Node {
-    private final Node condition;
-    private final Node thenBranch;
-    private final Node elseBranch;
-
-    public IfNode(Node condition, Node thenBranch, Node elseBranch) {
-        this.condition = condition;
-        this.thenBranch = thenBranch;
-        this.elseBranch = elseBranch;
-    }
+public class FunDecNode  implements Node {
+    private final String id;
+    private final Type type;
+    private final ArrayList<ParamNode> paramList;
 
     /**
      * Function invoked to check for semantic errors.
@@ -26,11 +20,7 @@ public class IfNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        ArrayList<SemanticError> errors = new ArrayList<>();
-        errors.addAll(condition.checkSemantics(symbolTable, nestingLevel));
-        errors.addAll(thenBranch.checkSemantics(symbolTable, nestingLevel));
-        errors.addAll(elseBranch.checkSemantics(symbolTable, nestingLevel));
-        return errors;
+        return null;
     }
 
     /**
