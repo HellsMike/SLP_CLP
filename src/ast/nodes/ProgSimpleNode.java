@@ -6,10 +6,10 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
-public class ProgExpNode implements Node {
+public class ProgSimpleNode implements Node {
     private final Node exp;
 
-    public ProgExpNode(Node exp) {
+    public ProgSimpleNode(Node exp) {
         this.exp = exp;
     }
 

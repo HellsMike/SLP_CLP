@@ -5,15 +5,30 @@ import ast.types.*;
 import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
     @Override
     public Node visitSimpleProg(SimpLanPlusParser.SimpleProgContext ctx) {
-        return new ProgExpNode(this.visit(ctx.exp()));
+        return new ProgSimpleNode(this.visit(ctx.exp()));
     }
 
     @Override
     public Node visitComplexProg(SimpLanPlusParser.ComplexProgContext ctx) {
-        return null;
+        ArrayList<Node> declarationList = new ArrayList<>();
+        ArrayList<Node> statementList = new ArrayList<>();
+
+        for (SimpLanPlusParser.DecContext dc : ctx.dec())
+            declarationList.add(this.visit(dc));
+
+        for (SimpLanPlusParser.StmContext sc : ctx.stm())
+            statementList.add(this.visit(sc));
+
+        if (ctx.exp() != null)
+            return new ProgComplexNode(declarationList, statementList, this.visit(ctx.exp()));
+        else
+            return new ProgComplexNode(declarationList, statementList, null);
     }
 
     @Override
