@@ -251,6 +251,30 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntExp(SimpLanPlusParser.IntExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIfBodyE(SimpLanPlusParser.IfBodyEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIfBodyE(SimpLanPlusParser.IfBodyEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIfBodyS(SimpLanPlusParser.IfBodySContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIfBodyS(SimpLanPlusParser.IfBodySContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -240,4 +240,24 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIntExp(SimpLanPlusParser.IntExpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpLanPlusParser#ifBodyE}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfBodyE(SimpLanPlusParser.IfBodyEContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpLanPlusParser#ifBodyE}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfBodyE(SimpLanPlusParser.IfBodyEContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpLanPlusParser#ifBodyS}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfBodyS(SimpLanPlusParser.IfBodySContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpLanPlusParser#ifBodyS}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfBodyS(SimpLanPlusParser.IfBodySContext ctx);
 }

@@ -146,4 +146,16 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIntExp(SimpLanPlusParser.IntExpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpLanPlusParser#ifBodyE}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfBodyE(SimpLanPlusParser.IfBodyEContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpLanPlusParser#ifBodyS}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfBodyS(SimpLanPlusParser.IfBodySContext ctx);
 }
