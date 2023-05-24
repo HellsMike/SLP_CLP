@@ -86,14 +86,14 @@ public class BodyNode implements Node {
             str.append("Dec: ");
 
             for (Node declaration: declarationList)
-                str.append(declaration).append(" ");
+                str.append(declaration).append("\t");
         }
 
         if (!statementList.isEmpty()) {
             str.append("Stm: ");
 
             for (Node statement: statementList)
-                str.append(statement).append(" ");
+                str.append(statement).append("\t");
         }
 
         if (exp != null)

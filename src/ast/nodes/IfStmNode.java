@@ -8,20 +8,15 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
-public class IfExpNode implements Node {
+public class IfStmNode implements Node {
     private final Node conditionExp;
     private final ArrayList<Node> thenStmList;
     private final ArrayList<Node> elseStmList;
-    private final Node thenExp;
-    private final Node elseExp;
 
-    public IfExpNode (Node conditionExp, ArrayList<Node> thenStmList, ArrayList<Node> elseStmList, Node thenExp,
-                      Node elseExp) {
+    public IfStmNode (Node conditionExp, ArrayList<Node> thenStmList, ArrayList<Node> elseStmList) {
         this.conditionExp = conditionExp;
         this.thenStmList = thenStmList;
         this.elseStmList = elseStmList;
-        this.thenExp = thenExp;
-        this.elseExp = elseExp;
     }
 
     /**
@@ -37,10 +32,6 @@ public class IfExpNode implements Node {
         int ifScopeLevel = symbolTable.newScope();
         // Check for condition semantic errors
         ArrayList<SemanticError> errors = new ArrayList<>(conditionExp.checkSemantics(symbolTable, nestingLevel));
-        // Check for then expression semantic errors
-        errors.addAll(thenExp.checkSemantics(symbolTable, ifScopeLevel));
-        // Check for else expression semantic errors
-        errors.addAll(elseExp.checkSemantics(symbolTable, ifScopeLevel));
 
         // Check for then statements semantic errors
         for (Node thenStm : thenStmList)
@@ -65,28 +56,19 @@ public class IfExpNode implements Node {
     public Type typeCheck() {
         // Check if condition is a boolean type
         if (conditionExp.typeCheck() instanceof BoolType) {
-            // Check for then statements type errors
+            // Check for then branch type errors
             for (Node thenStm : thenStmList)
                 if (thenStm.typeCheck() instanceof ErrorType)
                     return thenStm.typeCheck();
 
-            // Check for then expression type errors
-            if (thenExp.typeCheck() instanceof ErrorType)
-                return thenExp.typeCheck();
-
-            // Check for else statements type errors
+            // Check for else branch type errors
             for (Node elseStm: elseStmList)
                 if (elseStm.typeCheck() instanceof ErrorType)
                     return elseStm.typeCheck();
-
-            // Check for else expression type errors
-            if (elseExp.typeCheck() instanceof ErrorType)
-                return elseExp.typeCheck();
         } else
             return new ErrorType("Type error: if condition must be a boolean.");
 
-        return thenExp.typeCheck().getClass() == elseExp.typeCheck().getClass() ? thenExp.typeCheck() :
-                new ErrorType("Type error: then branch and else branch mismatch return type.");
+        return null;
     }
 
     /**
@@ -101,20 +83,22 @@ public class IfExpNode implements Node {
 
     @Override
     public String toString(String string) {
-        StringBuilder str = new StringBuilder("Then: ");
+        StringBuilder str = new StringBuilder();
 
-        if (!thenStmList.isEmpty())
+        if (!thenStmList.isEmpty()) {
+            str.append("Then: ");
+
             for (Node thenStm : thenStmList)
                 str.append(thenStm).append("\t");
+        }
 
-        str.append(thenExp.toString()).append("\tElse: ");
+        if (!elseStmList.isEmpty()) {
+            str.append("Else: ");
 
-        if (!elseStmList.isEmpty())
             for (Node elseStm : elseStmList)
                 str.append(elseStm).append("\t");
-
-        str.append(elseExp.toString());
-
+        }
+        
         return string + "If " + conditionExp.toString() + " ? " + str + "\n";
     }
 }

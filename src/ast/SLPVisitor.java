@@ -88,12 +88,22 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitFunStm(SimpLanPlusParser.FunStmContext ctx) {
-        return null;
+        ArrayList<Node> argumentList = new ArrayList<>();
+
+        for (SimpLanPlusParser.ExpContext ec : ctx.exp())
+            argumentList.add(this.visit(ec));
+
+        return new FunStmNode(ctx.ID().getText(), argumentList);
     }
 
     @Override
     public Node visitIfStm(SimpLanPlusParser.IfStmContext ctx) {
-        return null;
+        ArrayList<Node> thenStmList = new ArrayList<>();
+        ArrayList<Node> elseStmList = new ArrayList<>();
+
+
+
+        return new IfStmNode(this.visit(ctx.exp()), thenStmList, elseStmList);
     }
 
     @Override
@@ -129,7 +139,13 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitIfExp(SimpLanPlusParser.IfExpContext ctx) {
-        return null;
+        ArrayList<Node> thenStmList = new ArrayList<>();
+        ArrayList<Node> elseStmList = new ArrayList<>();
+
+
+
+        return new IfExpNode(this.visit(ctx.cond), thenStmList, elseStmList, this.visit(ctx.thenExp),
+                this.visit(ctx.elseExp));
     }
 
     @Override

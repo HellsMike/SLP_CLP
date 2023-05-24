@@ -6,10 +6,15 @@ import ast.types.VoidType;
 import java.util.ArrayList;
 
 public class FunStmNode extends FunCallNode {
-    public FunStmNode(String id, ArrayList<ParamNode> paramList) {
-        super(id, paramList);
+    public FunStmNode(String id, ArrayList<Node> argumentList) {
+        super(id, argumentList);
     }
 
+    /**
+     * Determines the type of the token.
+     *
+     * @return Type class of the corresponding node type.
+     */
     @Override
     public Type typeCheck() {
         super.typeCheck();
