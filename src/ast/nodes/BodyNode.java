@@ -2,6 +2,7 @@ package ast.nodes;
 
 import ast.types.ErrorType;
 import ast.types.Type;
+import ast.types.VoidType;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -28,12 +29,19 @@ public class BodyNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+
+        // Check declarations semantic
         for (Node declaration: declarationList)
             errors.addAll(declaration.checkSemantics(symbolTable, nestingLevel));
+
+        // Check statements semantic
         for (Node statement: statementList)
             errors.addAll(statement.checkSemantics(symbolTable, nestingLevel));
+
+        // Check expression semantic
         if (exp != null)
             errors.addAll(exp.checkSemantics(symbolTable, nestingLevel));
+
         return errors;
     }
 
@@ -44,18 +52,20 @@ public class BodyNode implements Node {
      */
     @Override
     public Type typeCheck() {
+        // Check for declarations type errors
         for (Node declaration: declarationList) {
             if (declaration.typeCheck() instanceof ErrorType)
                 return declaration.typeCheck();
         }
+
+        // Check for statements type errors
         for (Node statement: statementList) {
             if (statement.typeCheck() instanceof ErrorType)
                 return statement.typeCheck();
         }
-        if (exp != null)
-            return exp.typeCheck();
-        else
-            return null;
+
+        // If expression exists check for expression type errors, otherwise return Void
+        return exp != null ? exp.typeCheck() : new VoidType();
     }
 
     /**
@@ -70,14 +80,25 @@ public class BodyNode implements Node {
 
     @Override
     public String toString(String string) {
-        StringBuilder str = new StringBuilder(string + "Body {\n");
-        for (Node declaration: declarationList)
-            str.append(declaration);
-        for (Node statement: statementList)
-            str.append(statement);
+        StringBuilder str = new StringBuilder(string);
+
+        if (!declarationList.isEmpty()) {
+            str.append("Dec: ");
+
+            for (Node declaration: declarationList)
+                str.append(declaration).append(" ");
+        }
+
+        if (!statementList.isEmpty()) {
+            str.append("Stm: ");
+
+            for (Node statement: statementList)
+                str.append(statement).append(" ");
+        }
+
         if (exp != null)
-            str.append(exp);
-        str.append("}\n");
+            str.append("Exp: ").append(exp);
+
         return str.toString();
     }
 }

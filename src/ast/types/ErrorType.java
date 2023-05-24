@@ -5,6 +5,7 @@ public class ErrorType extends Type {
 
     public ErrorType(String message) {
         this.message = message;
+        System.out.println(message);
     }
 
     @Override

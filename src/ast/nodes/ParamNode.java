@@ -7,7 +7,6 @@ import utils.SymbolTable;
 import java.util.ArrayList;
 
 public class ParamNode implements Node {
-    // Don't use a IdNode because this id don't need to be checked on the symbol table
     private final String id;
     private final Type type;
 
@@ -18,10 +17,6 @@ public class ParamNode implements Node {
 
     public String getId() {
         return id;
-    }
-
-    public Type getType() {
-        return type;
     }
 
     /**
@@ -43,7 +38,7 @@ public class ParamNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        return null;
+        return type;
     }
 
     /**

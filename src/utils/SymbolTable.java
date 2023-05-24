@@ -15,7 +15,7 @@ public class SymbolTable {
     }
 
     /**
-     * Check if param 'id' already exists in the symbol table.
+     * Check for inner declaration of entry in the symbol table.
      *
      * @param id Identifier to check for in the symbol table.
      * @return STEntry object if found, otherwise null.
@@ -23,9 +23,11 @@ public class SymbolTable {
     public STEntry lookup(String id) {
         for (int i = table.size() - 1; i >= 0; i--) {
             HashMap<String, STEntry> scope = table.get(i);
+
             if (scope.containsKey(id))
                 return scope.get(id);
         }
+
         return null;
     }
 
@@ -38,6 +40,7 @@ public class SymbolTable {
      */
     public STEntry lookup(String id, int nestingLevel) {
         HashMap<String, STEntry> scope = table.get(nestingLevel);
+
         return scope.getOrDefault(id, null);
     }
 
@@ -59,10 +62,12 @@ public class SymbolTable {
     /**
      * Enter a new scope.
      *
-     * @param scope HashMap of the new scope.
+     * @return nesting level of the new scope.
      */
-    public void newScope(HashMap<String,STEntry> scope) {
-        table.add(scope);
+    public int newScope() {
+        table.add(new HashMap<>());
+
+        return table.size() - 1;
     }
 
     /**

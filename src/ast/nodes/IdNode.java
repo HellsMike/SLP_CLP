@@ -29,10 +29,12 @@ public class IdNode implements Node {
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
         this.nestingLevel = nestingLevel;
-        STEntry entry = symbolTable.lookup(id);
+        // Check for variable id in the symbol table
+        entry = symbolTable.lookup(id);
+
         if (entry == null)
             errors.add(new SemanticError("Id " + id + " is not declared."));
-        else this.entry = entry;
+
         return errors;
     }
 
@@ -43,11 +45,11 @@ public class IdNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (entry.getType() instanceof FunType) {
-            ErrorType error = new ErrorType("Wrong usage of function identifier.");
-            System.out.println(error);
-            return error;
-        } else
+        if (entry == null)
+            return new ErrorType("Id " + id + " not declared.");
+        else if (entry.getType() instanceof FunType)
+            return new ErrorType("Type error: wrong usage of function identifier.");
+        else
             return entry.getType();
     }
 
