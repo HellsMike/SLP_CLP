@@ -3,7 +3,6 @@ package ast.nodes;
 import ast.types.ErrorType;
 import ast.types.FunType;
 import ast.types.Type;
-import ast.types.VoidType;
 import utils.STEntry;
 import utils.SemanticError;
 import utils.SymbolTable;
@@ -12,13 +11,13 @@ import java.util.ArrayList;
 
 public class FunCallNode implements Node {
     private final String id;
-    private final ArrayList<ParamNode> paramList;
+    private final ArrayList<Node> argumentList;
     private STEntry entry;
     private int nestingLevel;
 
-    public FunCallNode (String id, ArrayList<ParamNode> paramList) {
+    public FunCallNode (String id, ArrayList<Node> argumentList) {
         this.id = id;
-        this.paramList = paramList;
+        this.argumentList = argumentList;
     }
 
     /**
@@ -37,17 +36,12 @@ public class FunCallNode implements Node {
         entry = symbolTable.lookup(id);
 
         if (entry != null) {
-            for (ParamNode param : paramList) {
-                // Check if parameters are declared
-                if (symbolTable.lookup(param.getId()) == null)
-                    errors.add(new SemanticError("Parameter " + param.getId() + " not defined."));
-
-                // Check parameters semantic
-                errors.addAll(param.checkSemantics(symbolTable, nestingLevel));
-            }
+            // Check parameters semantic
+            for (Node argument : argumentList)
+                errors.addAll(argument.checkSemantics(symbolTable, nestingLevel));
 
             // Check if function call has the correct number of parameters
-            if (((FunType) entry.getType()).getInputType().size() != paramList.size())
+            if (((FunType) entry.getType()).getInputType().size() != argumentList.size())
                 errors.add(new SemanticError("Function " + id + " called with wrong number of parameters."));
         } else
             errors.add(new SemanticError("Function " + id + " not declared."));
@@ -67,15 +61,15 @@ public class FunCallNode implements Node {
         else {
             if (entry.getType() instanceof FunType) {
                 // Check if given parameters type match with expected ones
-                ArrayList<Type> paramTypes = ((FunType) entry.getType()).getInputType();
-                for (int i = 0; i < paramTypes.size(); i++) {
-                    if (paramTypes.get(i).getClass() != paramList.get(i).typeCheck().getClass())
+                ArrayList<Type> argumentTypes = ((FunType) entry.getType()).getInputType();
+                for (int i = 0; i < argumentTypes.size(); i++) {
+                    if (argumentTypes.get(i).getClass() != argumentList.get(i).typeCheck().getClass())
                         return new ErrorType("Type error: mismatch between expected and used parameter type in " +
                                 "position " + (++i) + " in the invocation of " + id + ".");
 
                     // Check for type errors in parameters
-                    if (paramList.get(i).typeCheck() instanceof ErrorType)
-                        return paramList.get(i).typeCheck();
+                    if (argumentList.get(i).typeCheck() instanceof ErrorType)
+                        return argumentList.get(i).typeCheck();
                 }
             } else
                 return new ErrorType("Type error: wrong usage of variable identifier");
@@ -98,8 +92,8 @@ public class FunCallNode implements Node {
     public String toString(String string) {
         StringBuilder paramString = new StringBuilder();
 
-        for (ParamNode param : paramList)
-            paramString.append(param.toString()).append(" ");
+        for (Node argument : argumentList)
+            paramString.append(argument.toString()).append(" ");
 
         return string + "Call: " + id + "( Param: " + paramString + ") at nest level " + nestingLevel + "\n";
     }

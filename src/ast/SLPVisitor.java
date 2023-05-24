@@ -6,7 +6,6 @@ import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
     @Override
@@ -34,12 +33,19 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
     @Override
     public Node visitVarDec(SimpLanPlusParser.VarDecContext ctx) {
         Type type = (Type) this.visit(ctx.type());
+
         return new VarDeclarationNode(ctx.ID().getText(), type);
     }
 
     @Override
     public Node visitFunDec(SimpLanPlusParser.FunDecContext ctx) {
-        return null;
+        ArrayList<ParamNode> paramList = new ArrayList<>();
+
+        for (SimpLanPlusParser.ParamContext pc : ctx.param())
+            paramList.add((ParamNode) this.visit(pc));
+
+        return new FunDecNode(ctx.ID().getText(), (FunType) this.visit(ctx.type()), paramList,
+                (BodyNode) this.visit(ctx.body()));
     }
 
     @Override
@@ -48,8 +54,26 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
+    public Node visitBody(SimpLanPlusParser.BodyContext ctx) {
+        ArrayList<Node> declarationList = new ArrayList<>();
+        ArrayList<Node> statementList = new ArrayList<>();
+
+        for (SimpLanPlusParser.DecContext dc : ctx.dec())
+            declarationList.add(this.visit(dc));
+
+        for (SimpLanPlusParser.StmContext sc : ctx.stm())
+            statementList.add(this.visit(sc));
+
+        if (ctx.exp() != null)
+            return new BodyNode(declarationList, statementList, this.visit(ctx.exp()));
+        else
+            return new BodyNode(declarationList, statementList, null);
+    }
+
+    @Override
     public Node visitType(SimpLanPlusParser.TypeContext ctx) {
         String type = ctx.getText();
+
         return switch (type) {
             case "int" -> new IntType();
             case "bool" -> new BoolType();
@@ -115,7 +139,12 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitFunExp(SimpLanPlusParser.FunExpContext ctx) {
-        return null;
+        ArrayList<Node> argumentList = new ArrayList<>();
+
+        for (SimpLanPlusParser.ExpContext ec : ctx.exp())
+            argumentList.add(this.visit(ec));
+
+        return new FunCallNode(ctx.ID().getText(), argumentList);
     }
 
     @Override
