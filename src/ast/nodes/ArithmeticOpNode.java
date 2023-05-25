@@ -28,8 +28,11 @@ public abstract class ArithmeticOpNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+        // Check for left expression semantic errors
         errors.addAll(left.checkSemantics(symbolTable, nestingLevel));
+        // Check for right expression semantic errors
         errors.addAll(right.checkSemantics(symbolTable, nestingLevel));
+
         return errors;
     }
 
@@ -40,13 +43,11 @@ public abstract class ArithmeticOpNode implements Node {
      */
     @Override
     public Type typeCheck() {
+        // Check if both left and right operands are integers
         if (left.typeCheck() instanceof IntType && right.typeCheck() instanceof IntType)
             return new IntType();
-        else {
-            ErrorType error = new ErrorType("Type Error: Non integers in " + operation.toLowerCase() + " operation.");
-            System.out.println(error);
-            return error;
-        }
+        else
+            return new ErrorType("Type Error: Non integers in " + operation.toLowerCase() + " operation.");
     }
 
     /**
@@ -58,7 +59,7 @@ public abstract class ArithmeticOpNode implements Node {
     public abstract String codeGeneration();
 
     @Override
-    public String toString(String string) {
-        return string + operation + "\n" + left.toString(string + "  ") + right.toString(string + "  ");
+    public String toPrint(String string) {
+        return string + operation + "\n" + left.toPrint(string + "  ") + right.toPrint(string + "  ");
     }
 }

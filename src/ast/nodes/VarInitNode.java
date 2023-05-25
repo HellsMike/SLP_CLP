@@ -28,11 +28,18 @@ public class VarInitNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+        // Get the symbol table entry
         STEntry entry = symbolTable.lookup(id);
+
+        // Check if the entry exist in the symbol table
         if (entry == null)
             errors.add(new SemanticError("Id " + id + " is not declared."));
-        else this.entry = entry;
+        else
+            this.entry = entry;
+
+        // Check for expression semantic errors
         errors.addAll(exp.checkSemantics(symbolTable, nestingLevel));
+
         return errors;
     }
 
@@ -43,13 +50,11 @@ public class VarInitNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (entry.getType().getClass().equals(exp.typeCheck().getClass()))
+        // Check if the expression is compatible with the entry type
+        if (entry.getType().isEqual(exp.typeCheck()))
             return null;
-        else {
-            ErrorType error = new ErrorType("Type error: wrong type assigned to id " + id + ".");
-            System.out.println(error);
-            return error;
-        }
+        else
+            return new ErrorType("Type error: wrong type assigned to id " + id + ".");
     }
 
     /**
@@ -63,7 +68,7 @@ public class VarInitNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return null;
+    public String toPrint(String string) {
+        return string + "Variable " + id + ": " + exp.toPrint("");
     }
 }

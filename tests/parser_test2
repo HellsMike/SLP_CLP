@@ -1,0 +1,6 @@
+int a; int b; int c ;
+void f(int n){
+    int x ; int y ;
+    if (n > 0) { x = n ;} else { y = n+x ;}
+}
+c = 1 ; f(0) ;  // ERRORE perche` x e` usata ma non inizializzata (ramo else)

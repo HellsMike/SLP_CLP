@@ -75,8 +75,8 @@ public class IfStmNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return string + "If " + conditionExp.toString() + " ? " + thenBranch.toString("Then: ") +
-                thenBranch.toString("Else: ") + "\n";
+    public String toPrint(String string) {
+        return string + "If " + conditionExp.toPrint("") + " ? " + thenBranch.toPrint("Then: ") +
+                thenBranch.toPrint("Else: ") + "\n";
     }
 }

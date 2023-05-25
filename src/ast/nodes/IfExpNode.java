@@ -64,7 +64,7 @@ public class IfExpNode implements Node {
                 return elseType;
 
             // Check if then and else branches return the same type
-            return thenType.getClass() == elseType.getClass() ? thenType :
+            return thenType.isEqual(elseType) ? thenType :
                     new ErrorType("Type error: then branch and else branch mismatch return type.");
         } else
             return new ErrorType("Type error: if condition must be a boolean.");
@@ -81,8 +81,8 @@ public class IfExpNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return string + "If " + conditionExp.toString() + " ? " + thenBranch.toString("Then: ") +
-                thenBranch.toString("Else: ") + "\n";
+    public String toPrint(String string) {
+        return string + "If " + conditionExp.toPrint("") + " ? " + thenBranch.toPrint("Then: ") +
+                thenBranch.toPrint("Else: ") + "\n";
     }
 }

@@ -63,13 +63,15 @@ public class FunCallNode implements Node {
                 // Check if given parameters type match with expected ones
                 ArrayList<Type> argumentTypes = ((FunType) entry.getType()).getInputType();
                 for (int i = 0; i < argumentTypes.size(); i++) {
-                    if (argumentTypes.get(i).getClass() != argumentList.get(i).typeCheck().getClass())
+                    Type argType = argumentList.get(i).typeCheck();
+
+                    if (!argumentTypes.get(i).isEqual(argType))
                         return new ErrorType("Type error: mismatch between expected and used parameter type in " +
                                 "position " + (++i) + " in the invocation of " + id + ".");
 
                     // Check for type errors in parameters
-                    if (argumentList.get(i).typeCheck() instanceof ErrorType)
-                        return argumentList.get(i).typeCheck();
+                    if (argType instanceof ErrorType)
+                        return argType;
                 }
             } else
                 return new ErrorType("Type error: wrong usage of variable identifier");
@@ -89,11 +91,11 @@ public class FunCallNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
+    public String toPrint(String string) {
         StringBuilder paramString = new StringBuilder();
 
         for (Node argument : argumentList)
-            paramString.append(argument.toString()).append(" ");
+            paramString.append(argument.toPrint("")).append(" ");
 
         return string + "Call: " + id + "( Param: " + paramString + ") at nest level " + nestingLevel + "\n";
     }

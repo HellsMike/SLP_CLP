@@ -47,6 +47,7 @@ public class IdNode implements Node {
     public Type typeCheck() {
         if (entry == null)
             return new ErrorType("Id " + id + " not declared.");
+        // Check if id correspond to a function
         else if (entry.getType() instanceof FunType)
             return new ErrorType("Type error: wrong usage of function identifier.");
         else
@@ -64,7 +65,7 @@ public class IdNode implements Node {
     }
 
     @Override
-    public String toString(String string)  {
+    public String toPrint(String string)  {
         return string + "Id: " + id + " is at nest level " + entry.getNesting() + "\n";
     }
 }

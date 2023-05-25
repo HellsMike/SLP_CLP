@@ -21,7 +21,7 @@ type   : 'int'
 
 stm    : ID '=' exp ';'                                                                                   #initStm
        | ID '(' (exp (',' exp)* )? ')' ';'                                                                #funStm
-       | 'if' '(' exp ')' '{' then=ifBodyS '}' ('else' '{' else=ifBodyS '}')?                             #ifStm
+       | 'if' '(' exp ')' then=ifBodyS  ('else' else=ifBodyS)?                                            #ifStm
 	   ;
 
 exp    : INTEGER                                                                                          #intExp
@@ -31,7 +31,7 @@ exp    : INTEGER                                                                
        | left=exp (mul='*' | div='/' | plus='+' | minus='-') right=exp                                    #arithmeticExp
        | left=exp (gr='>' | min='<' | greq='>=' | mineq='<=' | comp='==') right=exp                       #realtionalExp
        | left=exp (and='&&' | or='||') right=exp                                                          #logicalExp
-       | 'if' '(' exp ')' '{' then=ifBodyE '}' 'else' '{' else=ifBodyE '}'                                #ifExp
+       | 'if' '(' exp ')' then=ifBodyE 'else' else=ifBodyE                                                #ifExp
        | '(' exp ')'                                                                                      #bracketsExp
        | ID '(' (exp (',' exp)* )? ')'                                                                    #funExp
        ;

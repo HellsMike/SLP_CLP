@@ -39,18 +39,18 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitFunDec(SimpLanPlusParser.FunDecContext ctx) {
-        ArrayList<ParamNode> paramList = new ArrayList<>();
+        ArrayList<VarDeclarationNode> paramList = new ArrayList<>();
 
         for (SimpLanPlusParser.ParamContext pc : ctx.param())
-            paramList.add((ParamNode) this.visit(pc));
+            paramList.add((VarDeclarationNode) this.visit(pc));
 
-        return new FunDecNode(ctx.ID().getText(), (FunType) this.visit(ctx.type()), paramList,
+        return new FunDecNode(ctx.ID().getText(), (Type) this.visit(ctx.type()), paramList,
                 (BodyNode) this.visit(ctx.body()));
     }
 
     @Override
     public Node visitParam(SimpLanPlusParser.ParamContext ctx) {
-        return new ParamNode(ctx.ID().getText(), (Type) this.visit(ctx.type()));
+        return new VarDeclarationNode(ctx.ID().getText(), (Type) this.visit(ctx.type()));
     }
 
     @Override

@@ -1,7 +1,8 @@
 package ast.nodes;
 
 import ast.types.Type;
-import utils.*;
+import utils.SemanticError;
+import utils.SymbolTable;
 
 import java.util.ArrayList;
 
@@ -29,5 +30,5 @@ public interface Node {
      */
     String codeGeneration();
 
-    String toString(String string);
+    String toPrint(String string);
 }

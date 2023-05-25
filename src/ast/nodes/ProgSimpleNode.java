@@ -22,7 +22,14 @@ public class ProgSimpleNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        return exp.checkSemantics(symbolTable, nestingLevel);
+        // Generate global scope
+        symbolTable.newScope();
+        // Check for expression semantic errors
+        ArrayList<SemanticError> errors = new ArrayList<>(exp.checkSemantics(symbolTable, nestingLevel));
+        // Exit global scope
+        symbolTable.exitScope();
+
+        return errors;
     }
 
     /**
@@ -32,6 +39,7 @@ public class ProgSimpleNode implements Node {
      */
     @Override
     public Type typeCheck() {
+        // Check for expression type
         return exp.typeCheck();
     }
 
@@ -46,7 +54,7 @@ public class ProgSimpleNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return "Prog\n" + exp.toString("  ");
+    public String toPrint(String string) {
+        return "Prog\n" + exp.toPrint("  ");
     }
 }

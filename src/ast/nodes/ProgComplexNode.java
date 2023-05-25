@@ -27,13 +27,25 @@ public class ProgComplexNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
+        // Generate global scope
+        symbolTable.newScope();
         ArrayList<SemanticError> errors = new ArrayList<>();
+
+        // Check for declarations semantic errors
         for (Node declaration: declarationList)
             errors.addAll(declaration.checkSemantics(symbolTable, nestingLevel));
+
+        // Check for statements semantic errors
         for (Node statement: statementList)
             errors.addAll(statement.checkSemantics(symbolTable, nestingLevel));
+
+        // Check for expression semantic errors
         if (exp != null)
             errors.addAll(exp.checkSemantics(symbolTable, nestingLevel));
+
+        // Exit global scope
+        symbolTable.exitScope();
+
         return errors;
     }
 
@@ -44,18 +56,18 @@ public class ProgComplexNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        for (Node declaration: declarationList) {
+        // Check for declarations type errors
+        for (Node declaration: declarationList)
             if (declaration.typeCheck() instanceof ErrorType)
                 return declaration.typeCheck();
-        }
-        for (Node statement: statementList) {
+
+        // Check for statements type errors
+        for (Node statement: statementList)
             if (statement.typeCheck() instanceof ErrorType)
                 return statement.typeCheck();
-        }
-        if (exp != null)
-            return exp.typeCheck();
-        else
-            return null;
+
+        // Check for expression type
+        return exp != null ? exp.typeCheck() : null;
     }
 
     /**
@@ -69,14 +81,18 @@ public class ProgComplexNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
+    public String toPrint(String string) {
         StringBuilder str = new StringBuilder(string + "Prog\n");
+
         for (Node declaration: declarationList)
-            str.append(declaration.toString("  "));
+            str.append(declaration.toPrint("  "));
+
         for (Node statement: statementList)
-            str.append(statement.toString("  "));
+            str.append(statement.toPrint("  "));
+
         if (exp != null)
-            str.append(exp.toString("  "));
+            str.append(exp.toPrint("  "));
+
         return str.toString();
     }
 }

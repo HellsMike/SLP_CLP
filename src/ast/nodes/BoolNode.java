@@ -47,7 +47,7 @@ public class BoolNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
+    public String toPrint(String string) {
         return string + value + "\n";
     }
 }

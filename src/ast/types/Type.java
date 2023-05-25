@@ -6,8 +6,12 @@ import utils.*;
 import java.util.ArrayList;
 
 public abstract class Type implements Node {
+    public boolean isEqual(Type comparisonType) {
+        return comparisonType.getClass().equals(this.getClass());
+    }
+
     @Override
-    public abstract String toString(String string);
+    public abstract String toPrint(String string);
 
     /**
      * DON'T USE! NOT IMPLEMENTED.

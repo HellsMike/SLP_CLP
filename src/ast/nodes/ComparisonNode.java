@@ -2,7 +2,6 @@ package ast.nodes;
 
 import ast.types.BoolType;
 import ast.types.ErrorType;
-import ast.types.IntType;
 import ast.types.Type;
 import utils.SemanticError;
 import utils.SymbolTable;
@@ -28,8 +27,11 @@ public class ComparisonNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+        // Check for left expression semantic errors
         errors.addAll(left.checkSemantics(symbolTable, nestingLevel));
+        // Check for right expression semantic errors
         errors.addAll(right.checkSemantics(symbolTable, nestingLevel));
+
         return errors;
     }
 
@@ -40,13 +42,11 @@ public class ComparisonNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (left.typeCheck().getClass().equals(right.typeCheck().getClass()))
+        // Check if both left and right operands have the same type
+        if (left.typeCheck().isEqual(right.typeCheck()))
             return new BoolType();
-        else {
-            ErrorType error = new ErrorType("Type Error: Different types in comparison operation.");
-            System.out.println(error);
-            return error;
-        }
+        else
+            return new ErrorType("Type Error: Different types in comparison operation.");
     }
 
     /**
@@ -60,7 +60,7 @@ public class ComparisonNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return string + "Comparison\n" + left.toString(string + "  ") + right.toString(string + "  ");
+    public String toPrint(String string) {
+        return string + "Comparison\n" + left.toPrint(string + "  ") + right.toPrint(string + "  ");
     }
 }

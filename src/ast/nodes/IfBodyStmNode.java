@@ -58,11 +58,12 @@ public class IfBodyStmNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
+    public String toPrint(String string) {
         StringBuilder str = new StringBuilder(string);
+
         if (!statementList.isEmpty())
             for (Node statement : statementList)
-                str.append(statement).append("\t");
+                str.append(statement.toPrint("")).append("\t");
         else
             str.append("do nothing\t");
 

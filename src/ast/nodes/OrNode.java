@@ -26,8 +26,11 @@ public class OrNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+        // Check for left expression semantic errors
         errors.addAll(left.checkSemantics(symbolTable, nestingLevel));
+        // Check for right expression semantic errors
         errors.addAll(right.checkSemantics(symbolTable, nestingLevel));
+
         return errors;
     }
 
@@ -38,13 +41,11 @@ public class OrNode implements Node {
      */
     @Override
     public Type typeCheck() {
+        // Check if both operands are booleans
         if (left.typeCheck() instanceof BoolType && right.typeCheck() instanceof BoolType)
             return new BoolType();
-        else {
-            ErrorType error = new ErrorType("Type Error: Non booleans in or operation.");
-            System.out.println(error);
-            return error;
-        }
+        else
+            return new ErrorType("Type Error: Non booleans in or operation.");
     }
 
     /**
@@ -58,7 +59,7 @@ public class OrNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return string + "Or\n" + left.toString(string + "  ") + right.toString(string + "  ");
+    public String toPrint(String string) {
+        return string + "Or\n" + left.toPrint(string + "  ") + right.toPrint(string + "  ");
     }
 }

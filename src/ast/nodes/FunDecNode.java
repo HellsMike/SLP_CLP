@@ -10,11 +10,12 @@ import java.util.ArrayList;
 
 public class FunDecNode  implements Node {
     private final String id;
-    private final FunType type;
-    private final ArrayList<ParamNode> paramList;
+    private final Type type;
+    private final ArrayList<VarDeclarationNode> paramList;
     private final BodyNode body;
+    private FunType funType;
 
-    public FunDecNode (String id, FunType type, ArrayList<ParamNode> paramList, BodyNode body) {
+    public FunDecNode (String id, Type type, ArrayList<VarDeclarationNode> paramList, BodyNode body) {
         this.id = id;
         this.type = type;
         this.paramList = paramList;
@@ -36,13 +37,20 @@ public class FunDecNode  implements Node {
         if (symbolTable.lookup(id, nestingLevel) != null)
             errors.add(new SemanticError("Id " + id + " is already declared."));
         else {
+            // Create the type class for the function
+            ArrayList<Type> inputType = new ArrayList<>();
+
+            for (VarDeclarationNode param : paramList)
+                inputType.add(param.typeCheck());
+
+            funType = new FunType(inputType, type);
+            // Add new fun id to symbol table
+            symbolTable.add(id, funType, nestingLevel);
             // Create a new scope
             int funScopeLevel = symbolTable.newScope();
-            // Add new fun id to symbol table
-            symbolTable.add(id, type, nestingLevel);
 
             // Check parameters semantic
-            for (ParamNode param : paramList)
+            for (VarDeclarationNode param : paramList)
                 errors.addAll(param.checkSemantics(symbolTable, funScopeLevel));
 
             // Check body semantic
@@ -62,7 +70,7 @@ public class FunDecNode  implements Node {
     @Override
     public Type typeCheck() {
         // Check for type errors in parameters
-        for (ParamNode param : paramList) {
+        for (VarDeclarationNode param : paramList) {
             if (param.typeCheck() instanceof ErrorType)
                 return param.typeCheck();
         }
@@ -70,8 +78,8 @@ public class FunDecNode  implements Node {
         Type bodyType = body.typeCheck();
 
         // If body type match with function return type return that type, otherwise return an error
-        return bodyType != type.getOutputType() ? new ErrorType("Function " + id + " expected return type " +
-                type.getOutputType() + " instead of " + bodyType + ".") : bodyType;
+        return bodyType.isEqual(funType.getOutputType()) ? bodyType : new ErrorType("Function " + id +
+                " expected return type " + funType.getOutputType() + " instead of " + bodyType + ".");
     }
 
     /**
@@ -85,12 +93,12 @@ public class FunDecNode  implements Node {
     }
 
     @Override
-    public String toString(String string) {
+    public String toPrint(String string) {
         StringBuilder paramString = new StringBuilder();
 
-        for (ParamNode param : paramList)
-            paramString.append(param.toString()).append(" ");
+        for (VarDeclarationNode param : paramList)
+            paramString.append(param.toPrint("")).append(" ");
 
-        return string + "Fun: " + id + "( "+ paramString + ")" + "\n" + body.toString("  ");
+        return string + "Fun: " + id + "( "+ paramString + ")" + "\n" + body.toPrint("  ");
     }
 }

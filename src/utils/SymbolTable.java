@@ -8,7 +8,7 @@ public class SymbolTable {
     /**
      * List of hash maps that represents a symbol table. Hash map: <key -> String for id, value -> STEntry object>.
      */
-    private final ArrayList<HashMap<String,STEntry>> table;
+    private final ArrayList<HashMap<String, STEntry>> table;
 
     public SymbolTable() {
         this.table = new ArrayList<>();
@@ -21,6 +21,7 @@ public class SymbolTable {
      * @return STEntry object if found, otherwise null.
      */
     public STEntry lookup(String id) {
+        // Reverse search for find the inner occurrence first
         for (int i = table.size() - 1; i >= 0; i--) {
             HashMap<String, STEntry> scope = table.get(i);
 

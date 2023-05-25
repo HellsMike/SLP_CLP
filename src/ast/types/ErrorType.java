@@ -9,7 +9,7 @@ public class ErrorType extends Type {
     }
 
     @Override
-    public String toString(String string) {
+    public String toPrint(String string) {
         return string + "Error: " + message + "\n";
     }
 }

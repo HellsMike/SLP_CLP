@@ -27,10 +27,14 @@ public class VarDeclarationNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+
+        // Check if variable or function id is already declared
         if (symbolTable.lookup(id, nestingLevel) != null)
             errors.add(new SemanticError("Variable with id " + id + " already declared."));
         else
+            // Add the identifier in the inner scope of the symbol table
             symbolTable.add(id, type, nestingLevel);
+
         return errors;
     }
 
@@ -41,12 +45,11 @@ public class VarDeclarationNode implements Node {
      */
     @Override
     public Type typeCheck() {
-        if (type instanceof VoidType) {
-            ErrorType error = new ErrorType("Type Error: illegal declaration of the variable " + id + ".");
-            System.out.println(error);
-            return error;
-        } else
-            return null;
+        // Check if variable is declared as void type
+        if (type instanceof VoidType)
+            return new ErrorType("Type Error: illegal use of type void in the variable " + id + ".");
+        else
+            return type;
     }
 
     /**
@@ -60,7 +63,7 @@ public class VarDeclarationNode implements Node {
     }
 
     @Override
-    public String toString(String string) {
-        return string + "Variable " + id + "\n";
+    public String toPrint(String string) {
+        return string + "Var " + id + "\n";
     }
 }
