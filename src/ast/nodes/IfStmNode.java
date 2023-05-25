@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class IfStmNode implements Node {
     private final Node conditionExp;
-    private final ArrayList<Node> thenStmList;
-    private final ArrayList<Node> elseStmList;
+    private final IfBodyStmNode thenBranch;
+    private final IfBodyStmNode elseBranch;
 
-    public IfStmNode (Node conditionExp, ArrayList<Node> thenStmList, ArrayList<Node> elseStmList) {
+    public IfStmNode (Node conditionExp, IfBodyStmNode thenBranch, IfBodyStmNode elseBranch) {
         this.conditionExp = conditionExp;
-        this.thenStmList = thenStmList;
-        this.elseStmList = elseStmList;
+        this.thenBranch = thenBranch;
+        this.elseBranch = elseBranch;
     }
 
     /**
@@ -32,15 +32,10 @@ public class IfStmNode implements Node {
         int ifScopeLevel = symbolTable.newScope();
         // Check for condition semantic errors
         ArrayList<SemanticError> errors = new ArrayList<>(conditionExp.checkSemantics(symbolTable, nestingLevel));
-
         // Check for then statements semantic errors
-        for (Node thenStm : thenStmList)
-            errors.addAll(thenStm.checkSemantics(symbolTable, ifScopeLevel));
-
+        errors.addAll(thenBranch.checkSemantics(symbolTable, ifScopeLevel));
         // check fort else statements semantic errors
-        for (Node elseStm : elseStmList)
-            errors.addAll(elseStm.checkSemantics(symbolTable, ifScopeLevel));
-
+        errors.addAll(elseBranch.checkSemantics(symbolTable, ifScopeLevel));
         // Exit current scope
         symbolTable.exitScope();
 
@@ -57,14 +52,12 @@ public class IfStmNode implements Node {
         // Check if condition is a boolean type
         if (conditionExp.typeCheck() instanceof BoolType) {
             // Check for then branch type errors
-            for (Node thenStm : thenStmList)
-                if (thenStm.typeCheck() instanceof ErrorType)
-                    return thenStm.typeCheck();
+            if (thenBranch.typeCheck() instanceof ErrorType)
+                return thenBranch.typeCheck();
 
             // Check for else branch type errors
-            for (Node elseStm: elseStmList)
-                if (elseStm.typeCheck() instanceof ErrorType)
-                    return elseStm.typeCheck();
+            if (elseBranch.typeCheck() instanceof ErrorType)
+                return elseBranch.typeCheck();
         } else
             return new ErrorType("Type error: if condition must be a boolean.");
 
@@ -83,22 +76,7 @@ public class IfStmNode implements Node {
 
     @Override
     public String toString(String string) {
-        StringBuilder str = new StringBuilder();
-
-        if (!thenStmList.isEmpty()) {
-            str.append("Then: ");
-
-            for (Node thenStm : thenStmList)
-                str.append(thenStm).append("\t");
-        }
-
-        if (!elseStmList.isEmpty()) {
-            str.append("Else: ");
-
-            for (Node elseStm : elseStmList)
-                str.append(elseStm).append("\t");
-        }
-        
-        return string + "If " + conditionExp.toString() + " ? " + str + "\n";
+        return string + "If " + conditionExp.toString() + " ? " + thenBranch.toString("Then: ") +
+                thenBranch.toString("Else: ") + "\n";
     }
 }

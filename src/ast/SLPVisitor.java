@@ -98,12 +98,8 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitIfStm(SimpLanPlusParser.IfStmContext ctx) {
-        ArrayList<Node> thenStmList = new ArrayList<>();
-        ArrayList<Node> elseStmList = new ArrayList<>();
-
-
-
-        return new IfStmNode(this.visit(ctx.exp()), thenStmList, elseStmList);
+        return new IfStmNode(this.visit(ctx.exp()), (IfBodyStmNode) this.visit(ctx.then),
+                (IfBodyStmNode) this.visit(ctx.else_));
     }
 
     @Override
@@ -139,13 +135,8 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitIfExp(SimpLanPlusParser.IfExpContext ctx) {
-        ArrayList<Node> thenStmList = new ArrayList<>();
-        ArrayList<Node> elseStmList = new ArrayList<>();
-
-
-
-        return new IfExpNode(this.visit(ctx.cond), thenStmList, elseStmList, this.visit(ctx.thenExp),
-                this.visit(ctx.elseExp));
+        return new IfExpNode(this.visit(ctx.exp()), (IfBodyExpNode) this.visit(ctx.then),
+                (IfBodyExpNode) this.visit(ctx.else_));
     }
 
     @Override
@@ -182,5 +173,25 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
     @Override
     public Node visitIntExp(SimpLanPlusParser.IntExpContext ctx) {
         return new IntNode(Integer.parseInt(ctx.INTEGER().getText()));
+    }
+
+    @Override
+    public Node visitIfBodyE(SimpLanPlusParser.IfBodyEContext ctx) {
+        ArrayList<Node> statementList = new ArrayList<>();
+
+        for (SimpLanPlusParser.StmContext sc : ctx.stm())
+            statementList.add(this.visit(sc));
+
+        return new IfBodyExpNode(statementList, this.visit(ctx.exp()));
+    }
+
+    @Override
+    public Node visitIfBodyS(SimpLanPlusParser.IfBodySContext ctx) {
+        ArrayList<Node> statementList = new ArrayList<>();
+
+        for (SimpLanPlusParser.StmContext sc : ctx.stm())
+            statementList.add(this.visit(sc));
+
+        return new IfBodyStmNode(statementList);
     }
 }
