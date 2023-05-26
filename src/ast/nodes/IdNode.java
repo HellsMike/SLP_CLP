@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class IdNode implements Node {
     private final String id;
     private STEntry entry;
-    private int nestingLevel;
 
     public IdNode(String id) {
         this.id = id;
@@ -28,12 +27,14 @@ public class IdNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
-        this.nestingLevel = nestingLevel;
         // Check for variable id in the symbol table
         entry = symbolTable.lookup(id);
 
         if (entry == null)
             errors.add(new SemanticError("Id " + id + " is not declared."));
+        // Check if the variable is initialized
+        else if (!entry.isInitialized())
+            errors.add(new SemanticError("Id " + id + " used before initialization."));
 
         return errors;
     }

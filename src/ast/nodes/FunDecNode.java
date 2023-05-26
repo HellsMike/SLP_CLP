@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public class FunDecNode  implements Node {
     private final String id;
     private final Type type;
-    private final ArrayList<VarDeclarationNode> paramList;
+    private final ArrayList<ParamNode> paramList;
     private final BodyNode body;
     private FunType funType;
 
-    public FunDecNode (String id, Type type, ArrayList<VarDeclarationNode> paramList, BodyNode body) {
+    public FunDecNode (String id, Type type, ArrayList<ParamNode> paramList, BodyNode body) {
         this.id = id;
         this.type = type;
         this.paramList = paramList;
@@ -40,17 +40,17 @@ public class FunDecNode  implements Node {
             // Create the type class for the function
             ArrayList<Type> inputType = new ArrayList<>();
 
-            for (VarDeclarationNode param : paramList)
+            for (ParamNode param : paramList)
                 inputType.add(param.typeCheck());
 
             funType = new FunType(inputType, type);
             // Add new fun id to symbol table
-            symbolTable.add(id, funType, nestingLevel);
+            symbolTable.add(id, funType);
             // Create a new scope
             int funScopeLevel = symbolTable.newScope();
 
             // Check parameters semantic
-            for (VarDeclarationNode param : paramList)
+            for (ParamNode param : paramList)
                 errors.addAll(param.checkSemantics(symbolTable, funScopeLevel));
 
             // Check body semantic
@@ -70,7 +70,7 @@ public class FunDecNode  implements Node {
     @Override
     public Type typeCheck() {
         // Check for type errors in parameters
-        for (VarDeclarationNode param : paramList) {
+        for (ParamNode param : paramList) {
             if (param.typeCheck() instanceof ErrorType)
                 return param.typeCheck();
         }
@@ -96,7 +96,7 @@ public class FunDecNode  implements Node {
     public String toPrint(String string) {
         StringBuilder paramString = new StringBuilder();
 
-        for (VarDeclarationNode param : paramList)
+        for (ParamNode param : paramList)
             paramString.append(param.toPrint("")).append(" ");
 
         return string + "Fun: " + id + "( "+ paramString + ")" + "\n" + body.toPrint("  ");

@@ -36,7 +36,7 @@ public class FunCallNode implements Node {
         entry = symbolTable.lookup(id);
 
         if (entry != null) {
-            // Check parameters semantic
+            // Check arguments semantic
             for (Node argument : argumentList)
                 errors.addAll(argument.checkSemantics(symbolTable, nestingLevel));
 

@@ -25,9 +25,15 @@ public class IfBodyStmNode implements Node {
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
 
+        // Create a new scope
+        int ifScopeLevel = symbolTable.newScope();
+
         // Check for statements semantic errors
         for (Node statement : statementList)
-            errors.addAll(statement.checkSemantics(symbolTable, nestingLevel));
+            errors.addAll(statement.checkSemantics(symbolTable, ifScopeLevel));
+
+        // Exit current scope
+        symbolTable.exitScope();
 
         return errors;
     }

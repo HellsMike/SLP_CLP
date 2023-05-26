@@ -23,9 +23,14 @@ public class IfBodyExpNode extends IfBodyStmNode {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics (SymbolTable symbolTable, int nestingLevel) {
-        ArrayList<SemanticError> errors = new ArrayList<>(super.checkSemantics(symbolTable, nestingLevel));
+        // Create a new scope
+        int ifScopeLevel = symbolTable.newScope();
+        // Check for statements semantic errors
+        ArrayList<SemanticError> errors = new ArrayList<>(super.checkSemantics(symbolTable, ifScopeLevel));
         // Check for expression semantic errors
-        errors.addAll(exp.checkSemantics(symbolTable, nestingLevel));
+        errors.addAll(exp.checkSemantics(symbolTable, ifScopeLevel));
+        // Exit current scope
+        symbolTable.exitScope();
 
         return errors;
     }

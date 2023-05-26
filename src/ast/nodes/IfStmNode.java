@@ -28,16 +28,12 @@ public class IfStmNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        // Create a new scope
-        int ifScopeLevel = symbolTable.newScope();
         // Check for condition semantic errors
         ArrayList<SemanticError> errors = new ArrayList<>(conditionExp.checkSemantics(symbolTable, nestingLevel));
         // Check for then statements semantic errors
-        errors.addAll(thenBranch.checkSemantics(symbolTable, ifScopeLevel));
+        errors.addAll(thenBranch.checkSemantics(symbolTable, nestingLevel));
         // check fort else statements semantic errors
-        errors.addAll(elseBranch.checkSemantics(symbolTable, ifScopeLevel));
-        // Exit current scope
-        symbolTable.exitScope();
+        errors.addAll(elseBranch.checkSemantics(symbolTable, nestingLevel));
 
         return errors;
     }

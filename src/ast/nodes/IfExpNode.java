@@ -28,16 +28,12 @@ public class IfExpNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        // Create a new scope
-        int ifScopeLevel = symbolTable.newScope();
         // Check for condition semantic errors
         ArrayList<SemanticError> errors = new ArrayList<>(conditionExp.checkSemantics(symbolTable, nestingLevel));
         // Check for then branch semantic errors
-        errors.addAll(thenBranch.checkSemantics(symbolTable, ifScopeLevel));
+        errors.addAll(thenBranch.checkSemantics(symbolTable, nestingLevel));
         // Check for else branch semantic errors
-        errors.addAll(elseBranch.checkSemantics(symbolTable, ifScopeLevel));
-        // Exit current scope
-        symbolTable.exitScope();
+        errors.addAll(elseBranch.checkSemantics(symbolTable, nestingLevel));
 
         return errors;
     }
@@ -49,7 +45,6 @@ public class IfExpNode implements Node {
      */
     @Override
     public Type typeCheck() {
-
         // Check if condition is a boolean type
         if (conditionExp.typeCheck() instanceof BoolType) {
             Type thenType = thenBranch.typeCheck();

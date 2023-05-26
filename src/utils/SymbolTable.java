@@ -46,15 +46,14 @@ public class SymbolTable {
     }
 
     /**
-     * Add a new entry to the symbol table.
+     * Add a new entry to the symbol table inner scope.
      *
      * @param id Identifier of the entry.
      * @param type Type of the entry.
-     * @param nestingLevel Level of scope where the entry have to be inserted.
      */
-    public void add(String id, Type type, int nestingLevel) {
-        STEntry entry = new STEntry(type, nestingLevel);
+    public void add(String id, Type type) {
         int lastIndex = table.size() - 1;
+        STEntry entry = new STEntry(type, lastIndex);
         HashMap<String,STEntry> scope = table.get(lastIndex);
         scope.put(id, entry);
         table.set(lastIndex, scope);
@@ -63,7 +62,7 @@ public class SymbolTable {
     /**
      * Enter a new scope.
      *
-     * @return nesting level of the new scope.
+     * @return Nesting level of the new scope.
      */
     public int newScope() {
         table.add(new HashMap<>());
@@ -76,5 +75,38 @@ public class SymbolTable {
      */
     public void exitScope() {
         table.remove(table.size() - 1);
+    }
+
+    /**
+     * Mark the entry as initialized and update the symbol table.
+     *
+     * @param entry The entry to initialize.
+     * @return Updated entry.
+     */
+    public STEntry initializeEntry(STEntry entry) {
+        HashMap<String, STEntry> scope = table.get(entry.getNesting());
+        int lastIndex = table.size() - 1;
+
+        // Get the id of the entry
+        for (String key : scope.keySet())
+            if (scope.get(key).equals(entry)) {
+
+                // Insert the initialized entry in the inner scope for visibility reason -> the entry will be seen as
+                // initialized only in the inner scope and those created later
+                if (entry.getNesting() == lastIndex)
+                    entry.initialize();
+                else {
+                    // A copy is needed to prevent values in the other scopes from being changed as well
+                    STEntry newEntry = new STEntry(entry.getType(), lastIndex);
+                    newEntry.initialize();
+                    table.get(lastIndex).put(key, newEntry);
+                }
+
+                break;
+            }
+
+        table.set(entry.getNesting(), scope);
+
+        return entry;
     }
 }

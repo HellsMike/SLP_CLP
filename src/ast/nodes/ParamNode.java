@@ -8,11 +8,11 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
-public class VarDeclarationNode implements Node {
+public class ParamNode implements Node {
     private final String id;
     private final Type type;
 
-    public VarDeclarationNode(String id, Type type) {
+    public ParamNode(String id, Type type) {
         this.id = id;
         this.type = type;
     }
@@ -26,16 +26,12 @@ public class VarDeclarationNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        ArrayList<SemanticError> errors = new ArrayList<>();
+        // Add the identifier in the inner scope of the symbol table
+        symbolTable.add(id, type);
+        // Set the entry as initialized
+        symbolTable.initializeEntry(symbolTable.lookup(id, nestingLevel));
 
-        // Check if variable or function id is already declared
-        if (symbolTable.lookup(id, nestingLevel) != null)
-            errors.add(new SemanticError("Variable with id " + id + " already declared."));
-        else
-            // Add the identifier in the inner scope of the symbol table
-            symbolTable.add(id, type);
-
-        return errors;
+        return new ArrayList<>();
     }
 
     /**

@@ -35,7 +35,8 @@ public class VarInitNode implements Node {
         if (entry == null)
             errors.add(new SemanticError("Id " + id + " is not declared."));
         else
-            this.entry = entry;
+            // Mark the entry as initialized
+            this.entry = symbolTable.initializeEntry(entry);
 
         // Check for expression semantic errors
         errors.addAll(exp.checkSemantics(symbolTable, nestingLevel));
