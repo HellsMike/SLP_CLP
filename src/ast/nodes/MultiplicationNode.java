@@ -13,6 +13,11 @@ public class MultiplicationNode extends ArithmeticOpNode {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return left.codeGeneration() +
+                "pushr A0 \n" +
+                right.codeGeneration() +
+                "popr T1 \n" +
+                "mul A0 T1 \n" +
+                "popr A0 \n";
     }
 }

@@ -43,7 +43,7 @@ public class IntNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return "storei A0 "+ value + "\n";
     }
 
     @Override

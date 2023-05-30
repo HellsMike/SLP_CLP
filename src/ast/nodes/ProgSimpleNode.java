@@ -50,7 +50,8 @@ public class ProgSimpleNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return exp.codeGeneration() +
+                "halt\n";
     }
 
     @Override

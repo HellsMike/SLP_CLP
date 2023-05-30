@@ -43,7 +43,7 @@ public class BoolNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return "storei A0 " + (value ? 1 : 0) + "\n";
     }
 
     @Override

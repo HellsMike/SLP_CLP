@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public abstract class RelationalOpNode implements Node {
     protected String operation;
-    private final Node left;
-    private final Node right;
+    protected final Node left;
+    protected final Node right;
 
     public RelationalOpNode(Node left, Node right) {
         this.left = left;

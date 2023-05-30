@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class IdNode implements Node {
     private final String id;
     private STEntry entry;
+    private int nestingUsage;
 
     public IdNode(String id) {
         this.id = id;
@@ -27,6 +28,7 @@ public class IdNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+        this.nestingUsage = nestingLevel;
         // Check for variable id in the symbol table
         entry = symbolTable.lookup(id);
 
@@ -62,7 +64,10 @@ public class IdNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return "move AL T1 \n" +
+                "store T1 0(T1) \n".repeat(Math.max(0, nestingUsage - entry.getNesting())) +
+                "subi T1 " + entry.getOffset() +"\n" +
+                "store A0 0(T1) \n" ;
     }
 
     @Override

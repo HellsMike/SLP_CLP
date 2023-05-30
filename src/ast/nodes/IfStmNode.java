@@ -3,6 +3,7 @@ package ast.nodes;
 import ast.types.BoolType;
 import ast.types.ErrorType;
 import ast.types.Type;
+import utils.CodGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -67,7 +68,19 @@ public class IfStmNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        String labelThen = CodGenSupport.newLabel();
+        String labelEnd = CodGenSupport.newLabel();
+
+        return conditionExp.codeGeneration() +
+                // 1 -> true
+                "storei T1 1 \n" +
+                // Check if condition return true
+                "beq A0 T1 "+ labelThen + "\n" +
+                elseBranch.codeGeneration() +
+                "b " + labelEnd + "\n" +
+                labelThen + ":\n" +
+                thenBranch.codeGeneration() +
+                labelEnd + ":\n" ;
     }
 
     @Override

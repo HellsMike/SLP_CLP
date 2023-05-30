@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public abstract class ArithmeticOpNode implements Node {
     protected String operation;
-    private final Node left;
-    private final Node right;
+    protected final Node left;
+    protected final Node right;
 
     public ArithmeticOpNode(Node left, Node right) {
         this.left = left;

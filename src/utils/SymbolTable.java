@@ -9,9 +9,14 @@ public class SymbolTable {
      * List of hash maps that represents a symbol table. Hash map: <key -> String for id, value -> STEntry object>.
      */
     private final ArrayList<HashMap<String, STEntry>> table;
+    /**
+     * Offset list.
+     */
+    private final ArrayList<Integer> offsetList;
 
     public SymbolTable() {
         this.table = new ArrayList<>();
+        this.offsetList = new ArrayList<>();
     }
 
     /**
@@ -53,10 +58,12 @@ public class SymbolTable {
      */
     public void add(String id, Type type) {
         int lastIndex = table.size() - 1;
-        STEntry entry = new STEntry(type, lastIndex);
+        int offset = offsetList.get(lastIndex);
+        STEntry entry = new STEntry(type, lastIndex, offset);
         HashMap<String,STEntry> scope = table.get(lastIndex);
         scope.put(id, entry);
         table.set(lastIndex, scope);
+        offsetList.set(lastIndex, offset + 1);
     }
 
     /**
@@ -66,6 +73,8 @@ public class SymbolTable {
      */
     public int newScope() {
         table.add(new HashMap<>());
+        // Start from 2 for FP and AL
+        offsetList.add(1);
 
         return table.size() - 1;
     }
@@ -108,5 +117,10 @@ public class SymbolTable {
         table.set(entry.getNesting(), scope);
 
         return entry;
+    }
+
+    public void increaseOffset() {
+        int lastIndex = offsetList.size() - 1 ;
+        offsetList.set(lastIndex, offsetList.get(lastIndex) + 1) ;
     }
 }

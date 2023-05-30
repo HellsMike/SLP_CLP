@@ -13,6 +13,11 @@ public class DivisionNode extends ArithmeticOpNode {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return left.codeGeneration() +
+                "pushr A0 \n" +
+                right.codeGeneration() +
+                "popr T1 \n" +
+                "div T1 A0 \n" +
+                "popr A0 \n";
     }
 }

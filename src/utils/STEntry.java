@@ -16,10 +16,15 @@ public class STEntry {
      * Keep track of the initialization state.
      */
     private boolean initialized;
+    /**
+     * Offset to frame pointer.
+     */
+    private final int offset;
 
-    public STEntry(Type type, int nestingLevel) {
+    public STEntry(Type type, int nestingLevel, int offset) {
         this.type = type;
         this.nestingLevel = nestingLevel;
+        this.offset = offset;
 
         // If entry is a function, mark as initialized
         initialized = type instanceof FunType;
@@ -31,6 +36,10 @@ public class STEntry {
 
     public int getNesting() {
         return nestingLevel;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
     /**
