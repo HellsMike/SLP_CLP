@@ -7,6 +7,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for integer values.
+ */
 public class IntNode implements Node {
     private final int value;
 

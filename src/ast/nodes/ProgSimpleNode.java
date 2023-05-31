@@ -6,6 +6,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for program with expression.
+ */
 public class ProgSimpleNode implements Node {
     private final Node exp;
 

@@ -8,6 +8,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for function declaration's body.
+ */
 public class BodyNode implements Node {
     private final ArrayList<Node> declarationList;
     private final ArrayList<Node> statementList;

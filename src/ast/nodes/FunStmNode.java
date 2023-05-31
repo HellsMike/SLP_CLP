@@ -5,6 +5,9 @@ import ast.types.VoidType;
 
 import java.util.ArrayList;
 
+/**
+ * Node for function invocation as statement (not evaluation its return value).
+ */
 public class FunStmNode extends FunCallNode {
     public FunStmNode(String id, ArrayList<Node> argumentList) {
         super(id, argumentList);

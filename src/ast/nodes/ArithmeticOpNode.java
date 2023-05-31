@@ -8,6 +8,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Abstract node for arithmetic operators.
+ */
 public abstract class ArithmeticOpNode implements Node {
     protected String operation;
     protected final Node left;

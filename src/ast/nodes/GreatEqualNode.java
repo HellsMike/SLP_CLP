@@ -2,6 +2,9 @@ package ast.nodes;
 
 import utils.CodGenSupport;
 
+/**
+ * Node for relational operator ">=".
+ */
 public class GreatEqualNode extends RelationalOpNode {
     public GreatEqualNode(Node left, Node right) {
         super(left, right);

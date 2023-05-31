@@ -7,6 +7,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for if body with statements and expression.
+ */
 public class IfBodyExpNode extends IfBodyStmNode {
     private final Node exp;
     public IfBodyExpNode(ArrayList<Node> statementList, Node exp) {

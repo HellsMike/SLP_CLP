@@ -9,6 +9,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for if block with statements and expression.
+ */
 public class IfExpNode implements Node {
     private final Node conditionExp;
     private final IfBodyExpNode thenBranch;

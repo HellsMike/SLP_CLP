@@ -7,6 +7,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for program with declarations, statements and expression.
+ */
 public class ProgComplexNode implements Node {
     private final ArrayList<Node> declarationList;
     private final ArrayList<Node> statementList;

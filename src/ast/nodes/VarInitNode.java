@@ -8,6 +8,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for variable assignment.
+ */
 public class VarInitNode implements Node {
     private final String id;
     private final Node exp;

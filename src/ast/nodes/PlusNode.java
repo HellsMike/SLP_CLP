@@ -1,5 +1,8 @@
 package ast.nodes;
 
+/**
+ * Node for arithmetic operator "+".
+ */
 public class PlusNode extends ArithmeticOpNode {
     public PlusNode(Node left, Node right) {
         super(left, right);

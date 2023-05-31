@@ -2,6 +2,9 @@ package ast.nodes;
 
 import utils.CodGenSupport;
 
+/**
+ * Node for relational operator "<=".
+ */
 public class MinEqualNode extends RelationalOpNode {
     public MinEqualNode(Node left, Node right) {
         super(left, right);

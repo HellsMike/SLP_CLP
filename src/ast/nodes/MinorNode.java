@@ -3,7 +3,7 @@ package ast.nodes;
 import utils.CodGenSupport;
 
 /**
- * Node for relational operator "<=".
+ * Node for relational operator "<".
  */
 public class MinorNode extends RelationalOpNode {
     public MinorNode(Node left, Node right) {

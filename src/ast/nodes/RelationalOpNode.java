@@ -9,6 +9,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for relational operators.
+ */
 public abstract class RelationalOpNode implements Node {
     protected String operation;
     protected final Node left;

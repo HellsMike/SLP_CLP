@@ -9,6 +9,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for variable usage (as expression).
+ */
 public class IdNode implements Node {
     private final String id;
     private STEntry entry;

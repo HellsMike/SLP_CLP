@@ -8,6 +8,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for function declaration.
+ */
 public class FunDecNode  implements Node {
     private final String id;
     private final Type type;

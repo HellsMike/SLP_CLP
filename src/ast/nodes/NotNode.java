@@ -8,6 +8,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for logical operator "!".
+ */
 public class NotNode implements Node {
     private Node exp;
 

@@ -6,6 +6,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Generic node interface.
+ */
 public interface Node {
     /**
      * Function invoked to check for semantic errors.

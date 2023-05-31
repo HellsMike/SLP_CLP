@@ -8,6 +8,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for logical operator "||".
+ */
 public class OrNode implements Node {
     private final Node left;
     private final Node right;

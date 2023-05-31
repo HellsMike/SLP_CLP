@@ -9,6 +9,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for function invocation as expression (evaluating its return value).
+ */
 public class FunCallNode implements Node {
     private final String id;
     private final ArrayList<Node> argumentList;

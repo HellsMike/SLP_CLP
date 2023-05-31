@@ -7,6 +7,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for booleans values.
+ */
 public class BoolNode implements Node {
     private final boolean value;
 

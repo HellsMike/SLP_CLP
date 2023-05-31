@@ -8,6 +8,9 @@ import utils.SymbolTable;
 
 import java.util.ArrayList;
 
+/**
+ * Node for relational operator "==".
+ */
 public class ComparisonNode implements Node {
     private final Node left;
     private final Node right;
