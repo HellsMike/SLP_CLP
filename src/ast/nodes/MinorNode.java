@@ -26,8 +26,8 @@ public class MinorNode extends RelationalOpNode {
                 "pushr A0 \n" +
                 right.codeGeneration() +
                 "popr T1 \n" +
-                // Check if right is <= of left
-                "bleq A0 T1 " + labelTrue + "\n" +
+                // Check if left is <= to right
+                "bleq T1 A0 " + labelTrue + "\n" +
                 labelFalse + ":\n" +
                 "storei A0 0\n" +
                 "b " + labelEnd + "\n" +
@@ -38,4 +38,4 @@ public class MinorNode extends RelationalOpNode {
                 "b " + labelEnd + "\n" +
                 labelEnd + ":\n";
     }
-    }
+}

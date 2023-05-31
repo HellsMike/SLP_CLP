@@ -99,7 +99,6 @@ public class SymbolTable {
         // Get the id of the entry
         for (String key : scope.keySet())
             if (scope.get(key).equals(entry)) {
-
                 // Insert the initialized entry in the inner scope for visibility reason -> the entry will be seen as
                 // initialized only in the inner scope and those created later
                 if (entry.getNesting() == lastIndex)

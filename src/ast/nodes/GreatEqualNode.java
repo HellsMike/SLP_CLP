@@ -25,12 +25,11 @@ public class GreatEqualNode extends RelationalOpNode {
                 "pushr A0 \n" +
                 right.codeGeneration() +
                 "popr T1 \n" +
-                "bleq T1 A0 " + labelTrue + "\n" +
-                "storei A0 0\n" +
+                "bleq A0 T1 " + labelTrue + "\n" +
+                "storei A0 0 \n" +
                 "b " + labelEnd + "\n" +
-                labelTrue + ":\n" +
-                "storei A0 1\n" +
-                labelEnd + ":\n";
+                labelTrue + ": \n" +
+                "storei A0 1 \n" +
+                labelEnd + ": \n";
     }
-
-    }
+}

@@ -62,7 +62,8 @@ public class VarDeclarationNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return "addi SP 1 \n" +
+                "popr SP \n";
     }
 
     @Override
