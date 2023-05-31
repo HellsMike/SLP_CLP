@@ -3,6 +3,7 @@ package ast.nodes;
 import ast.types.BoolType;
 import ast.types.ErrorType;
 import ast.types.Type;
+import utils.CodGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -58,7 +59,14 @@ public class OrNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        String labelEnd = CodGenSupport.newLabel();
+
+        return left.codeGeneration() +
+                "storei T1 1 \n" +
+                // If true, A0 already contains 1
+                "beq A0 T1 " + labelEnd + "\n" +
+                right.codeGeneration() +
+                labelEnd + ": \n";
     }
 
     @Override

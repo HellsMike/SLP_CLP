@@ -78,12 +78,12 @@ public class IfStmNode implements Node {
                 // 1 -> true
                 "storei T1 1 \n" +
                 // Check if condition return true
-                "beq A0 T1 "+ labelThen + "\n" +
+                "beq A0 T1 " + labelThen + "\n" +
                 elseBranch.codeGeneration() +
                 "b " + labelEnd + "\n" +
-                labelThen + ":\n" +
+                labelThen + ": \n" +
                 thenBranch.codeGeneration() +
-                labelEnd + ":\n" ;
+                labelEnd + ": \n" ;
     }
 
     @Override

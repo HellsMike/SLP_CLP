@@ -3,6 +3,7 @@ package ast.nodes;
 import ast.types.BoolType;
 import ast.types.ErrorType;
 import ast.types.Type;
+import utils.CodGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -59,7 +60,19 @@ public class ComparisonNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return "";
+        String labelTrue = CodGenSupport.newLabel();
+        String labelEnd = CodGenSupport.newLabel();
+
+        return left.codeGeneration() +
+                "pushr A0 \n" +
+                right.codeGeneration() +
+                "popr T1 \n" +
+                "beq A0 T1 " + labelTrue + "\n" +
+                "storei A0 0 \n" +
+                "b " + labelEnd + "\n" +
+                labelTrue + ": \n" +
+                "storei A0 1 \n" +
+                labelEnd + ": \n";
     }
 
     @Override

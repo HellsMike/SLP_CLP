@@ -28,14 +28,13 @@ public class MinorNode extends RelationalOpNode {
                 "popr T1 \n" +
                 // Check if left is <= to right
                 "bleq T1 A0 " + labelTrue + "\n" +
-                labelFalse + ":\n" +
-                "storei A0 0\n" +
+                labelFalse + ": \n" +
+                "storei A0 0 \n" +
                 "b " + labelEnd + "\n" +
-                labelTrue + ":\n" +
+                labelTrue + ": \n" +
                 // Check if right is equal to left
                 "beq A0 T1 " + labelFalse + "\n" +
-                "storei A0 1\n" +
-                "b " + labelEnd + "\n" +
-                labelEnd + ":\n";
+                "storei A0 1 \n" +
+                labelEnd + ": \n";
     }
 }

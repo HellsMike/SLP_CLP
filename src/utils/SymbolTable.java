@@ -73,7 +73,7 @@ public class SymbolTable {
      */
     public int newScope() {
         table.add(new HashMap<>());
-        // Start from 2 for FP and AL
+        // Leave one offset slot free for AL
         offsetList.add(1);
 
         return table.size() - 1;
