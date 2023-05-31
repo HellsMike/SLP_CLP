@@ -1,6 +1,6 @@
 package ast.nodes;
 
-import utils.CodGenSupport;
+import utils.CodeGenSupport;
 
 /**
  * Node for relational operator ">".
@@ -18,8 +18,8 @@ public class GreaterNode extends RelationalOpNode {
      */
     @Override
     public String codeGeneration() {
-        String labelFalse = CodGenSupport.newLabel();
-        String labelEnd = CodGenSupport.newLabel();
+        String labelFalse = CodeGenSupport.newLabel();
+        String labelEnd = CodeGenSupport.newLabel();
 
         return left.codeGeneration() +
                 "pushr A0 \n" +

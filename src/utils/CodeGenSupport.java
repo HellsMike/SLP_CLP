@@ -1,6 +1,6 @@
 package utils;
 
-public class CodGenSupport {
+public class CodeGenSupport {
     private static int labelCount = 0;
     private static int functionLabelCount = 0;
 

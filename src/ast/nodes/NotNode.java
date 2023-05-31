@@ -3,6 +3,7 @@ package ast.nodes;
 import ast.types.BoolType;
 import ast.types.ErrorType;
 import ast.types.Type;
+import utils.CodeGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -52,7 +53,17 @@ public class NotNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        String labelEnd = CodeGenSupport.newLabel();
+        String labelTrue = CodeGenSupport.newLabel();
+
+        return exp.codeGeneration() +
+                "storei T1 1 \n" +
+                "beq A0 T1 " + labelTrue + "\n" +
+                "storei A0 1 \n" +
+                "b " + labelEnd + "\n" +
+                labelTrue + ": \n" +
+                "storei A0 0 \n" +
+                labelEnd + ": \n";
     }
 
     @Override

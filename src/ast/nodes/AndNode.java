@@ -3,7 +3,7 @@ package ast.nodes;
 import ast.types.BoolType;
 import ast.types.ErrorType;
 import ast.types.Type;
-import utils.CodGenSupport;
+import utils.CodeGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -59,7 +59,7 @@ public class AndNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        String labelEnd = CodGenSupport.newLabel();
+        String labelEnd = CodeGenSupport.newLabel();
 
         return left.codeGeneration() +
                 "storei T1 0 \n" +

@@ -15,6 +15,7 @@ public class VarInitNode implements Node {
     private final String id;
     private final Node exp;
     private STEntry entry;
+    private int nestingUsage;
 
     public VarInitNode (String id, Node exp) {
         this.id = id;
@@ -31,6 +32,7 @@ public class VarInitNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+        this.nestingUsage = nestingLevel;
         // Get the symbol table entry
         STEntry entry = symbolTable.lookup(id);
 
@@ -68,7 +70,10 @@ public class VarInitNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        return exp.codeGeneration() +
+                "move AL T1 \n" +
+                "store T1 0(T1) \n".repeat(Math.max(0, nestingUsage - entry.getNesting())) +
+                "load A0 " + entry.getOffset() + "(T1) \n";
     }
 
     @Override

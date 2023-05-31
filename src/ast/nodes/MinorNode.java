@@ -1,6 +1,6 @@
 package ast.nodes;
 
-import utils.CodGenSupport;
+import utils.CodeGenSupport;
 
 /**
  * Node for relational operator "<".
@@ -18,9 +18,9 @@ public class MinorNode extends RelationalOpNode {
      */
     @Override
     public String codeGeneration() {
-        String labelTrue = CodGenSupport.newLabel();
-        String labelFalse = CodGenSupport.newLabel();
-        String labelEnd = CodGenSupport.newLabel();
+        String labelTrue = CodeGenSupport.newLabel();
+        String labelFalse = CodeGenSupport.newLabel();
+        String labelEnd = CodeGenSupport.newLabel();
 
         return left.codeGeneration() +
                 "pushr A0 \n" +
