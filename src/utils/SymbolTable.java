@@ -106,7 +106,7 @@ public class SymbolTable {
                     entry.initialize();
                 else {
                     // A copy is needed to prevent values in the other scopes from being changed as well
-                    STEntry newEntry = new STEntry(entry.getType(), lastIndex);
+                    STEntry newEntry = new STEntry(entry.getType(), lastIndex, entry.getOffset());
                     newEntry.initialize();
                     table.get(lastIndex).put(key, newEntry);
                 }
