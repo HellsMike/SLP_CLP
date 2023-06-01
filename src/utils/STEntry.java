@@ -13,6 +13,10 @@ public class STEntry {
      */
     private final int nestingLevel;
     /**
+     * Function label for code generation.
+     */
+    private final String label;
+    /**
      * Keep track of the initialization state.
      */
     private boolean initialized;
@@ -25,6 +29,17 @@ public class STEntry {
         this.type = type;
         this.nestingLevel = nestingLevel;
         this.offset = offset;
+        this.label = null;
+
+        // If entry is a function, mark as initialized
+        initialized = type instanceof FunType;
+    }
+
+    public STEntry(Type type, int nestingLevel, int offset, String label) {
+        this.type = type;
+        this.nestingLevel = nestingLevel;
+        this.offset = offset;
+        this.label = label;
 
         // If entry is a function, mark as initialized
         initialized = type instanceof FunType;
@@ -40,6 +55,10 @@ public class STEntry {
 
     public int getOffset() {
         return offset;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     /**

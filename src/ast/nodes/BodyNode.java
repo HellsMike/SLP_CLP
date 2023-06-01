@@ -78,7 +78,18 @@ public class BodyNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        StringBuilder decStmCode = new StringBuilder();
+
+        for (Node declaration : declarationList)
+            decStmCode.append(declaration.codeGeneration());
+
+        for (Node statement : statementList)
+            decStmCode.append(statement.codeGeneration());
+
+        if (exp != null)
+            decStmCode.append(exp.codeGeneration());
+
+        return decStmCode.toString();
     }
 
     @Override

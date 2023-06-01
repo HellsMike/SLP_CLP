@@ -51,7 +51,7 @@ public class SymbolTable {
     }
 
     /**
-     * Add a new entry to the symbol table inner scope.
+     * Add a new entry to the symbol table inner scope; used for variables.
      *
      * @param id Identifier of the entry.
      * @param type Type of the entry.
@@ -60,6 +60,23 @@ public class SymbolTable {
         int lastIndex = table.size() - 1;
         int offset = offsetList.get(lastIndex);
         STEntry entry = new STEntry(type, lastIndex, offset);
+        HashMap<String,STEntry> scope = table.get(lastIndex);
+        scope.put(id, entry);
+        table.set(lastIndex, scope);
+        offsetList.set(lastIndex, offset + 1);
+    }
+
+    /**
+     * Add a new entry to the symbol table inner scope; used for functions.
+     *
+     * @param id Identifier of the entry.
+     * @param type Type of the entry.
+     * @param label Function label for code generation.
+     */
+    public void add(String id, Type type, String label) {
+        int lastIndex = table.size() - 1;
+        int offset = offsetList.get(lastIndex);
+        STEntry entry = new STEntry(type, lastIndex, offset, label);
         HashMap<String,STEntry> scope = table.get(lastIndex);
         scope.put(id, entry);
         table.set(lastIndex, scope);
@@ -118,6 +135,9 @@ public class SymbolTable {
         return entry;
     }
 
+    /**
+     * Increase the offset of the inner scope.
+     */
     public void increaseOffset() {
         int lastIndex = offsetList.size() - 1 ;
         offsetList.set(lastIndex, offsetList.get(lastIndex) + 1) ;

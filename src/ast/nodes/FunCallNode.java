@@ -16,7 +16,7 @@ public class FunCallNode implements Node {
     private final String id;
     private final ArrayList<Node> argumentList;
     private STEntry entry;
-    private int nestingLevel;
+    private int nestingUsage;
 
     public FunCallNode (String id, ArrayList<Node> argumentList) {
         this.id = id;
@@ -33,7 +33,7 @@ public class FunCallNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         ArrayList<SemanticError> errors = new ArrayList<>();
-        this.nestingLevel = nestingLevel;
+        this.nestingUsage = nestingLevel;
 
         // Check for function id in the symbol table
         entry = symbolTable.lookup(id);
@@ -90,7 +90,21 @@ public class FunCallNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        StringBuilder argumentsCode = new StringBuilder();
+
+        for (Node argument : argumentList)
+            argumentsCode.append(argument.codeGeneration()).append("pushr A0 \n");
+
+        return "pushr FP \n" +
+                "move SP FP \n" +
+                "addi FP 1 \n" +
+                "move AL T1 \n" +
+                "store T1 0(T1) \n".repeat(Math.max(0, nestingUsage - entry.getNesting())) +
+                "pushr T1 \n" +
+                argumentsCode +
+                "move FP AL \n" +
+                "subi AL 1 \n" +
+                "jsub " + entry.getLabel() + "\n";
     }
 
     @Override
@@ -100,6 +114,6 @@ public class FunCallNode implements Node {
         for (Node argument : argumentList)
             paramString.append(argument.toPrint("")).append(" ");
 
-        return string + "Call: " + id + "( Param: " + paramString + ") at nest level " + nestingLevel + "\n";
+        return string + "Call: " + id + "( Param: " + paramString + ") at nest level " + nestingUsage + "\n";
     }
 }

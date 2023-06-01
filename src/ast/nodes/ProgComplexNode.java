@@ -2,6 +2,7 @@ package ast.nodes;
 
 import ast.types.ErrorType;
 import ast.types.Type;
+import utils.CodeGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -80,7 +81,20 @@ public class ProgComplexNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        StringBuilder decStmCode = new StringBuilder();
+
+        for (Node declaration : declarationList)
+            decStmCode.append(declaration.codeGeneration());
+
+        for (Node statement : statementList)
+            decStmCode.append(statement.codeGeneration());
+
+        if (exp != null)
+            decStmCode.append(exp.codeGeneration());
+
+        return decStmCode +
+                "halt \n" +
+                CodeGenSupport.getFunctionsCode();
     }
 
     @Override

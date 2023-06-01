@@ -48,6 +48,19 @@ public class IfBodyExpNode extends IfBodyStmNode {
         return super.typeCheck() instanceof ErrorType ? super.typeCheck() : exp.typeCheck();
     }
 
+    /**
+     * Bytecode generation for interpreter.
+     *
+     * @return Code.
+     */
+    @Override
+    public String codeGeneration() {
+        String statementsCode = super.codeGeneration();
+
+        return statementsCode +
+                exp.codeGeneration();
+    }
+
     @Override
     public String toPrint(String string) {
         StringBuilder str = new StringBuilder(super.toPrint(string));

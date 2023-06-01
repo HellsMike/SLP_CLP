@@ -63,7 +63,12 @@ public class IfBodyStmNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        StringBuilder statementsCode = new StringBuilder();
+
+        for (Node statement : statementList)
+            statementsCode.append(statement.codeGeneration());
+
+        return statementsCode.toString();
     }
 
     @Override

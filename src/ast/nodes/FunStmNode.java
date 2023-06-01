@@ -22,7 +22,7 @@ public class FunStmNode extends FunCallNode {
     public Type typeCheck() {
         super.typeCheck();
 
-        // Return void type because is a statement and not an expression (CLP project requirement)
-        return new VoidType();
+        // Return null because is a statement and not an expression (CLP project requirement)
+        return null;
     }
 }

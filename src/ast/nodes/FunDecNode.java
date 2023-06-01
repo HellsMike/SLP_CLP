@@ -3,6 +3,7 @@ package ast.nodes;
 import ast.types.ErrorType;
 import ast.types.FunType;
 import ast.types.Type;
+import utils.CodeGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -17,6 +18,7 @@ public class FunDecNode  implements Node {
     private final ArrayList<ParamNode> paramList;
     private final BodyNode body;
     private FunType funType;
+    private String label;
 
     public FunDecNode (String id, Type type, ArrayList<ParamNode> paramList, BodyNode body) {
         this.id = id;
@@ -47,10 +49,13 @@ public class FunDecNode  implements Node {
                 inputType.add(param.typeCheck());
 
             funType = new FunType(inputType, type);
+            label = CodeGenSupport.newFunLabel();
             // Add new fun id to symbol table
-            symbolTable.add(id, funType);
+            symbolTable.add(id, funType, label);
             // Create a new scope
             int funScopeLevel = symbolTable.newScope();
+            // Increment the offset to leave space to RA
+            symbolTable.increaseOffset();
 
             // Check parameters semantic
             for (ParamNode param : paramList)
@@ -92,7 +97,21 @@ public class FunDecNode  implements Node {
      */
     @Override
     public String codeGeneration() {
-        return null;
+        CodeGenSupport.addFunctionCode(
+                        label + ": \n" +
+                        "pushr RA \n" +
+                        body.codeGeneration() +
+                        "popr RA \n" +
+                        "addi SP " + paramList.size() + " \n" +
+                        "pop \n" +
+                        "store FP 0(FP) \n" +
+                        "move FP AL \n" +
+                        "subi AL 1 \n" +
+                        "pop \n" +
+                        "rsub RA \n"
+        );
+
+        return "push "+ label +" \n";
     }
 
     @Override
