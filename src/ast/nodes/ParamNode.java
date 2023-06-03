@@ -29,12 +29,18 @@ public class ParamNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        // Add the identifier in the inner scope of the symbol table
-        symbolTable.add(id, type);
-        // Set the entry as initialized
-        symbolTable.initializeEntry(symbolTable.lookup(id, nestingLevel));
+        ArrayList<SemanticError> errors = new ArrayList<>();
 
-        return new ArrayList<>();
+        // Check if there is more than one parameter with the same identifier
+        if (symbolTable.lookup(id, nestingLevel) != null) {
+            // Add the identifier in the inner scope of the symbol table
+            symbolTable.add(id, type);
+            // Set the entry as initialized
+            symbolTable.initializeEntry(symbolTable.lookup(id, nestingLevel));
+        } else
+            errors.add(new SemanticError("Id " + id + " passed more than one time as argument of a function."));
+
+        return errors;
     }
 
     /**
