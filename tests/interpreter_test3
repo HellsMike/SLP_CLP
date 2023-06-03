@@ -1,0 +1,7 @@
+int u ;
+void f(int m, int n){
+	if (m>n) { u = m+n ;}
+	else { int x ; x = 1 ; f(m+1,n+1) ; }
+}
+f(5,4) ; u
+// cosa succede se la invoco con f(4,5)?

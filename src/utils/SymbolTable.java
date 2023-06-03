@@ -20,6 +20,27 @@ public class SymbolTable {
     }
 
     /**
+     * Create a deep copy of the symbol table.
+     *
+     * @param symbolTable Original symbol table.
+     */
+    public SymbolTable(SymbolTable symbolTable) {
+        this.table = new ArrayList<>();
+
+        for (HashMap<String, STEntry> map : symbolTable.table) {
+            HashMap<String, STEntry> newMap = new HashMap<>();
+
+            for (Map.Entry<String, STEntry> entry : map.entrySet())
+                newMap.put(entry.getKey(), new STEntry(entry.getValue()));
+
+            this.table.add(newMap);
+        }
+
+        this.offsetList = new ArrayList<>(symbolTable.offsetList);
+    }
+
+
+    /**
      * Check for inner declaration of entry in the symbol table.
      *
      * @param id Identifier to check for in the symbol table.
@@ -63,7 +84,7 @@ public class SymbolTable {
         HashMap<String,STEntry> scope = table.get(lastIndex);
         scope.put(id, entry);
         table.set(lastIndex, scope);
-        offsetList.set(lastIndex, offset + 1);
+        offsetList.set(lastIndex, (offset + 1));
     }
 
     /**
@@ -80,7 +101,7 @@ public class SymbolTable {
         HashMap<String,STEntry> scope = table.get(lastIndex);
         scope.put(id, entry);
         table.set(lastIndex, scope);
-        offsetList.set(lastIndex, offset + 1);
+        offsetList.set(lastIndex, (offset + 1));
     }
 
     /**
@@ -90,8 +111,7 @@ public class SymbolTable {
      */
     public int newScope() {
         table.add(new HashMap<>());
-        // Leave one offset slot free for AL
-        offsetList.add(1);
+        offsetList.add(0);
 
         return table.size() - 1;
     }
@@ -116,16 +136,7 @@ public class SymbolTable {
         // Get the id of the entry
         for (String key : scope.keySet())
             if (scope.get(key).equals(entry)) {
-                // Insert the initialized entry in the inner scope for visibility reason -> the entry will be seen as
-                // initialized only in the inner scope and those created later
-                if (entry.getNesting() == lastIndex)
-                    entry.initialize();
-                else {
-                    // A copy is needed to prevent values in the other scopes from being changed as well
-                    STEntry newEntry = new STEntry(entry.getType(), lastIndex, entry.getOffset());
-                    newEntry.initialize();
-                    table.get(lastIndex).put(key, newEntry);
-                }
+                entry.initialize();
 
                 break;
             }
@@ -133,6 +144,22 @@ public class SymbolTable {
         table.set(entry.getNesting(), scope);
 
         return entry;
+    }
+
+    /**
+     * Get a list of identifiers of initialized entries.
+     *
+     * @return List of identifiers.
+     */
+    public ArrayList<String> getInitializedEntries() {
+        ArrayList<String> entryList = new ArrayList<>();
+
+        for (HashMap<String, STEntry> scope : table)
+            for (String key : scope.keySet())
+                if (scope.get(key).isInitialized())
+                    entryList.add(key);
+
+        return entryList;
     }
 
     /**

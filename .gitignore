@@ -34,3 +34,4 @@ SimpLan/bin/
 lib/
 log/
 SimpLanStandard
+*.asm

@@ -73,7 +73,8 @@ public class VarInitNode implements Node {
         return exp.codeGeneration() +
                 "move AL T1 \n" +
                 "store T1 0(T1) \n".repeat(Math.max(0, nestingUsage - entry.getNesting())) +
-                "load A0 " + entry.getOffset() + "(T1) \n";
+                "subi T1 " + entry.getOffset() + " \n" +
+                "load A0 0(T1) \n";
     }
 
     @Override

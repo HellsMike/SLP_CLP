@@ -1,0 +1,9 @@
+int u ;
+int f(int n){
+        int y ;
+	y = 1 ;
+	if (n == 0) { y }
+	else { y = f(n-1) ; y*n }
+}
+u = 6 ;
+f(u)

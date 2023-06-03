@@ -25,6 +25,13 @@ public class STEntry {
      */
     private final int offset;
 
+    /**
+     * Constructor for variable entries.
+     *
+     * @param type Type of the entry.
+     * @param nestingLevel Nesting level of the entry declaration.
+     * @param offset Offset from AL for code generation.
+     */
     public STEntry(Type type, int nestingLevel, int offset) {
         this.type = type;
         this.nestingLevel = nestingLevel;
@@ -35,6 +42,14 @@ public class STEntry {
         initialized = type instanceof FunType;
     }
 
+    /**
+     * Constructor for function entries.
+     *
+     * @param type Type of the entry.
+     * @param nestingLevel Nesting level of the entry declaration.
+     * @param offset Offset from AL for code generation.
+     * @param label Label of the function for code generation.
+     */
     public STEntry(Type type, int nestingLevel, int offset, String label) {
         this.type = type;
         this.nestingLevel = nestingLevel;
@@ -44,6 +59,20 @@ public class STEntry {
         // If entry is a function, mark as initialized
         initialized = type instanceof FunType;
     }
+
+    /**
+     * Create a deep copy of the entry.
+     *
+     * @param entry Original entry.
+     */
+    public STEntry(STEntry entry) {
+        this.type = entry.type;
+        this.nestingLevel = entry.nestingLevel;
+        this.offset = entry.offset;
+        this.label = entry.label;
+        this.initialized = entry.initialized;
+    }
+
 
     public Type getType() {
         return type;

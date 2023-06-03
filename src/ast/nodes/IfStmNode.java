@@ -34,10 +34,20 @@ public class IfStmNode implements Node {
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
         // Check for condition semantic errors
         ArrayList<SemanticError> errors = new ArrayList<>(conditionExp.checkSemantics(symbolTable, nestingLevel));
-        // Check for then statements semantic errors
+        // Create a deep copy of the symbol table and pass it to else branch, this is needed to check if both branches
+        // have the same entries initialized
+        SymbolTable elseSymbolTable = new SymbolTable(symbolTable);
+        // Check for then branch semantic errors
         errors.addAll(thenBranch.checkSemantics(symbolTable, nestingLevel));
-        // check fort else statements semantic errors
-        errors.addAll(elseBranch.checkSemantics(symbolTable, nestingLevel));
+        // Check for else branch semantic errors
+        errors.addAll(elseBranch.checkSemantics(elseSymbolTable, nestingLevel));
+        ArrayList<String> stInitialized = symbolTable.getInitializedEntries();
+        ArrayList<String> estInitialized = elseSymbolTable.getInitializedEntries();
+
+        // Check if then branch and else branch initialized the same variables, otherwise the rest of the program is
+        // unpredictable
+        if (stInitialized.size() != estInitialized.size() || !stInitialized.containsAll(estInitialized))
+            errors.add(new SemanticError("Then branch and else branch must have the same variables initialized."));
 
         return errors;
     }

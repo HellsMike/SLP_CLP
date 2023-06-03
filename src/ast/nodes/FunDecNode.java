@@ -111,7 +111,7 @@ public class FunDecNode  implements Node {
                         "rsub RA \n"
         );
 
-        return "push "+ label +" \n";
+        return "push " + label + " \n";
     }
 
     @Override

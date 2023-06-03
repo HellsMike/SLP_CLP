@@ -39,13 +39,16 @@ public class FunCallNode implements Node {
         entry = symbolTable.lookup(id);
 
         if (entry != null) {
-            // Check arguments semantic
-            for (Node argument : argumentList)
-                errors.addAll(argument.checkSemantics(symbolTable, nestingLevel));
+            if (entry.getType() instanceof FunType) {
+                // Check arguments semantic
+                for (Node argument : argumentList)
+                    errors.addAll(argument.checkSemantics(symbolTable, nestingLevel));
 
-            // Check if function call has the correct number of parameters
-            if (((FunType) entry.getType()).getInputType().size() != argumentList.size())
-                errors.add(new SemanticError("Function " + id + " called with wrong number of parameters."));
+                // Check if function call has the correct number of parameters
+                if (((FunType) entry.getType()).getInputType().size() != argumentList.size())
+                    errors.add(new SemanticError("Function " + id + " called with wrong number of parameters."));
+            } else
+                errors.add(new SemanticError("Wrong usage of variable identifier."));
         } else
             errors.add(new SemanticError("Function " + id + " not declared."));
 

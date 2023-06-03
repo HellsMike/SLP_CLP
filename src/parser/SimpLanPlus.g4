@@ -39,7 +39,7 @@ exp    : INTEGER                                                                
 ifBodyE: '{' (stm)* exp '}'
        ;
 
-ifBodyS: '{' (stm)* '}'
+ifBodyS: '{' (stm)+ '}'
        ;
 /*------------------------------------------------------------------
  * LEXER RULES

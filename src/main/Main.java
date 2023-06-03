@@ -1,17 +1,23 @@
 package main;
 
 import ast.SLPVisitor;
+import ast.VMVisitor;
 import ast.nodes.Node;
 import ast.types.ErrorType;
+import evaluator.ExecuteVM;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import parser.SVMLexer;
+import parser.SVMParser;
 import parser.SimpLanPlusLexer;
 import parser.SimpLanPlusParser;
 import utils.SLPErrorHandler;
 import utils.SemanticError;
 import utils.SymbolTable;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -34,8 +40,7 @@ public class Main {
 
          // Initialize parser
          SimpLanPlusLexer lexer = new SimpLanPlusLexer(charStream);
-         CommonTokenStream tokens = new CommonTokenStream(lexer);
-         SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
+         SimpLanPlusParser parser = new SimpLanPlusParser(new CommonTokenStream(lexer));
 
          // Adding custom error handler
          SLPErrorHandler handler = new SLPErrorHandler();
@@ -54,7 +59,7 @@ public class Main {
 
          // Check for lexical and syntax errors
          if (handler.errorNumber() > 0) {
-            System.out.print(handler);
+            System.out.println(handler);
             handler.toLog(filename);
          } else {
             SymbolTable symbolTable = new SymbolTable();
@@ -82,6 +87,23 @@ public class Main {
                      System.out.println("Type of the program is: " + type.toPrint("") + ".");
                   else
                      System.out.println("Program has no type.");
+
+                  // Code generation
+                  String code = ast.codeGeneration();
+                  BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".asm"));
+                  out.write(code);
+                  out.close();
+                  CharStream codeStream = CharStreams.fromString(code);
+                  System.out.println("Code generated! Assembling and running generated code...");
+                  SVMLexer lexerSVM = new SVMLexer(codeStream);
+                  SVMParser parserSVM = new SVMParser(new CommonTokenStream(lexerSVM));
+
+                  VMVisitor visitorSVM = new VMVisitor();
+                  visitorSVM.visit(parserSVM.assembly());
+
+                  System.out.println("Starting Virtual Machine...");
+                  ExecuteVM vm = new ExecuteVM(visitorSVM.code);
+                  vm.cpu();
                }
             }
          }

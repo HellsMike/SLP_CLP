@@ -53,7 +53,9 @@ public class ProgSimpleNode implements Node {
      */
     @Override
     public String codeGeneration() {
-        return exp.codeGeneration() +
+        return "pushr FP \n" +
+                "pushr AL \n" +
+                exp.codeGeneration() +
                 "halt \n";
     }
 

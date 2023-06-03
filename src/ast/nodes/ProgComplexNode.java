@@ -92,7 +92,9 @@ public class ProgComplexNode implements Node {
         if (exp != null)
             decStmCode.append(exp.codeGeneration());
 
-        return decStmCode +
+        return "pushr FP \n" +
+                "pushr AL \n" +
+                decStmCode +
                 "halt \n" +
                 CodeGenSupport.getFunctionsCode();
     }

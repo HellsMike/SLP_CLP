@@ -9,7 +9,7 @@ public class SLPErrorHandler extends BaseErrorListener {
     private final ArrayList<String> errorList;
 
     public SLPErrorHandler() {
-        errorList = new ArrayList<String>();
+        errorList = new ArrayList<>();
     }
 
     /**
@@ -34,7 +34,7 @@ public class SLPErrorHandler extends BaseErrorListener {
      * @param filename Name of the file.
      */
     public void toLog(String filename) throws IOException {
-        String logDirPath = System.getProperty("user.dir") + "/log";
+        String logDirPath = System.getProperty("user.dir") + "/tests/log";
 
         // Create log directory if not exists
         File logDir = new File(logDirPath);
@@ -45,7 +45,8 @@ public class SLPErrorHandler extends BaseErrorListener {
             }
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(logDirPath + "/" + filename + ".log"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(logDirPath + "/" +
+                filename.substring(6) + ".log")); // Substring to remove path to filename
         writer.write(this.toString());
         writer.close();
     }
