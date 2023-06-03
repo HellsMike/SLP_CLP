@@ -42,25 +42,24 @@ public class FunDecNode  implements Node {
         if (symbolTable.lookup(id, nestingLevel) != null)
             errors.add(new SemanticError("Id " + id + " is already declared."));
         else {
+            // Create the type class for the function
+            ArrayList<Type> inputType = new ArrayList<>();
+
             for (ParamNode param : paramList)
                 inputType.add(param.typeCheck());
 
-            // Create a new scope
-            int funScopeLevel = symbolTable.newScope();
-            // Increment the offset to leave space to RA in the stack
-            symbolTable.increaseOffset();
-            // Create the type class for the function
-            ArrayList<Type> inputType = new ArrayList<>();
             funType = new FunType(inputType, type);
             label = CodeGenSupport.newFunLabel();
             // Add new fun id to symbol table
             symbolTable.add(id, funType, label);
+            // Create a new scope
+            int funScopeLevel = symbolTable.newScope();
+            // Increment the offset to leave space to RA
+            symbolTable.increaseOffset();
 
             // Check parameters semantic
-            for (ParamNode param : paramList) {
+            for (ParamNode param : paramList)
                 errors.addAll(param.checkSemantics(symbolTable, funScopeLevel));
-                inputType.add(param.typeCheck());
-            }
 
             // Check body semantic
             errors.addAll(body.checkSemantics(symbolTable, funScopeLevel));

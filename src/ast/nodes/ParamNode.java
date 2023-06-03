@@ -32,7 +32,7 @@ public class ParamNode implements Node {
         ArrayList<SemanticError> errors = new ArrayList<>();
 
         // Check if there is more than one parameter with the same identifier
-        if (symbolTable.lookup(id, nestingLevel) != null) {
+        if (symbolTable.lookup(id, nestingLevel) == null) {
             // Add the identifier in the inner scope of the symbol table
             symbolTable.add(id, type);
             // Set the entry as initialized
