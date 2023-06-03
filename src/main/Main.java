@@ -17,6 +17,7 @@ import utils.SemanticError;
 import utils.SymbolTable;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -27,12 +28,12 @@ public class Main {
          // Getting filename at running time
          Scanner scanner = new Scanner(System.in);
          System.out.println("Insert filename: ");
-         String filename = "tests/" + scanner.nextLine();
+         String filename = scanner.nextLine();
 
          CharStream charStream = null;
 
          try {
-            charStream = CharStreams.fromFileName(filename);
+            charStream = CharStreams.fromFileName("tests/" + filename);
          } catch (Exception e) {
             System.out.println("Error during the opening of the file.");
             System.exit(1);
@@ -90,7 +91,19 @@ public class Main {
 
                   // Code generation
                   String code = ast.codeGeneration();
-                  BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".asm"));
+
+                  String codeDirPath = System.getProperty("user.dir") + "/tests/asm";
+
+                  // Create code directory if not exists
+                  File codeDir = new File(codeDirPath);
+
+                  if (!codeDir.exists())
+                     if(!codeDir.mkdir()) {
+                        System.out.println("Error during the creation of the code folder.");
+                        System.exit(1);
+                     }
+
+                  BufferedWriter out = new BufferedWriter(new FileWriter(codeDirPath + "/" + filename + ".asm"));
                   out.write(code);
                   out.close();
                   CharStream codeStream = CharStreams.fromString(code);

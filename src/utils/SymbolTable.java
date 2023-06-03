@@ -111,7 +111,8 @@ public class SymbolTable {
      */
     public int newScope() {
         table.add(new HashMap<>());
-        offsetList.add(0);
+        // Start from 1 to leave space for AL
+        offsetList.add(1);
 
         return table.size() - 1;
     }

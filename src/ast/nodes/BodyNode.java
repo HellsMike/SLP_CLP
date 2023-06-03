@@ -89,7 +89,8 @@ public class BodyNode implements Node {
         if (exp != null)
             decStmCode.append(exp.codeGeneration());
 
-        return decStmCode.toString();
+        return decStmCode +
+                "addi SP " + declarationList.size() + " \n";
     }
 
     @Override

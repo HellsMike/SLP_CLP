@@ -33,5 +33,5 @@ SimpLan/bin/
 ### Project Related ###
 lib/
 log/
+asm/
 SimpLanStandard
-*.asm

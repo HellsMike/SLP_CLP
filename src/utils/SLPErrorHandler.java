@@ -35,18 +35,16 @@ public class SLPErrorHandler extends BaseErrorListener {
      */
     public void toLog(String filename) throws IOException {
         String logDirPath = System.getProperty("user.dir") + "/tests/log";
-
         // Create log directory if not exists
         File logDir = new File(logDirPath);
-        if (!logDir.exists()) {
+
+        if (!logDir.exists())
             if(!logDir.mkdir()) {
                 System.out.println("Error during the creation of the log folder.");
                 System.exit(1);
             }
-        }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(logDirPath + "/" +
-                filename.substring(6) + ".log")); // Substring to remove path to filename
+        BufferedWriter writer = new BufferedWriter(new FileWriter(logDirPath + "/" + filename + ".log"));
         writer.write(this.toString());
         writer.close();
     }

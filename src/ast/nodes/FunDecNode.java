@@ -54,12 +54,13 @@ public class FunDecNode  implements Node {
             symbolTable.add(id, funType, label);
             // Create a new scope
             int funScopeLevel = symbolTable.newScope();
-            // Increment the offset to leave space to RA
-            symbolTable.increaseOffset();
 
             // Check parameters semantic
             for (ParamNode param : paramList)
                 errors.addAll(param.checkSemantics(symbolTable, funScopeLevel));
+
+            // Increment the offset to leave space to RA
+            symbolTable.increaseOffset();
 
             // Check body semantic
             errors.addAll(body.checkSemantics(symbolTable, funScopeLevel));
