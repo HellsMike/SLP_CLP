@@ -11,13 +11,13 @@ import java.util.ArrayList;
 /**
  * Node for variable assignment.
  */
-public class VarInitNode implements Node {
+public class VarAssNode implements Node {
     private final String id;
     private final Node exp;
     private STEntry entry;
     private int nestingUsage;
 
-    public VarInitNode (String id, Node exp) {
+    public VarAssNode(String id, Node exp) {
         this.id = id;
         this.exp = exp;
     }

@@ -83,7 +83,7 @@ public class SLPVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitInitStm(SimpLanPlusParser.InitStmContext ctx) {
-        return new VarInitNode(ctx.ID().getText(), this.visit(ctx.exp()));
+        return new VarAssNode(ctx.ID().getText(), this.visit(ctx.exp()));
     }
 
     @Override
