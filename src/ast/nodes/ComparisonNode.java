@@ -76,7 +76,7 @@ public class ComparisonNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + "Comparison\n" + left.toPrint(string + "  ") + right.toPrint(string + "  ");
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + "==\n" +  left.toPrint(tab + 1) + right.toPrint(tab + 1);
     }
 }

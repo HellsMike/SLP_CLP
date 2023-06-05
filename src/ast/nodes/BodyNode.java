@@ -94,25 +94,17 @@ public class BodyNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        StringBuilder str = new StringBuilder(string);
+    public String toPrint(int tab) {
+        StringBuilder str = new StringBuilder();
 
-        if (!declarationList.isEmpty()) {
-            str.append("Dec: ");
+        for (Node declaration: declarationList)
+            str.append(declaration.toPrint(tab + 1));
 
-            for (Node declaration: declarationList)
-                str.append(declaration.toPrint("")).append("\t");
-        }
-
-        if (!statementList.isEmpty()) {
-            str.append("Stm: ");
-
-            for (Node statement: statementList)
-                str.append(statement.toPrint("")).append("\t");
-        }
+        for (Node statement: statementList)
+            str.append(statement.toPrint(tab + 1));
 
         if (exp != null)
-            str.append("Exp: ").append(exp.toPrint(""));
+            str.append(exp.toPrint(tab + 1));
 
         return str.toString();
     }

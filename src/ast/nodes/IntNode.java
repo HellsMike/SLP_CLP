@@ -50,7 +50,7 @@ public class IntNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + value + "\n";
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + value + "\n";
     }
 }

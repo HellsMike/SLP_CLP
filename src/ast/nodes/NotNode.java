@@ -67,7 +67,7 @@ public class NotNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + "Not\n" + exp.toPrint(string + "  ");
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + "Not\n" + exp.toPrint(tab + 1);
     }
 }

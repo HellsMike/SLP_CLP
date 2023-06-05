@@ -70,7 +70,7 @@ public class OrNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + "Or\n" + left.toPrint(string + "  ") + right.toPrint(string + "  ");
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + "Or\n" + left.toPrint(tab + 1) + "\n" + right.toPrint(tab + 1);
     }
 }

@@ -39,9 +39,11 @@ public class VarAssNode implements Node {
         // Check if the entry exist in the symbol table
         if (entry == null)
             errors.add(new SemanticError("Id " + id + " is not declared."));
-        else
+        else {
             // Mark the entry as initialized
-            this.entry = symbolTable.initializeEntry(entry);
+            entry.initialize();
+            this.entry = entry;
+        }
 
         // Check for expression semantic errors
         errors.addAll(exp.checkSemantics(symbolTable, nestingLevel));
@@ -78,7 +80,7 @@ public class VarAssNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + "Variable " + id + ": " + exp.toPrint("");
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + id + ":\n" + exp.toPrint(tab + 1);
     }
 }

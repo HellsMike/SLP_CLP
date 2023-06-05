@@ -67,7 +67,7 @@ public class VarDeclarationNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + "Var " + id + "\n";
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + "Var " + id + "\n";
     }
 }

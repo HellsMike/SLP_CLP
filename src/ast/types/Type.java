@@ -11,7 +11,7 @@ public abstract class Type implements Node {
     }
 
     @Override
-    public abstract String toPrint(String string);
+    public abstract String toPrint(int tab);
 
     /**
      * DON'T USE! NOT IMPLEMENTED.

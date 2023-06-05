@@ -73,7 +73,7 @@ public class FunCallNode implements Node {
 
                     if (!argumentTypes.get(i).isEqual(argType))
                         return new ErrorType("Type error: mismatch between expected and used parameter type in " +
-                                "position " + (++i) + " in the invocation of " + id + ".");
+                                "position " + (i + 1) + " in the invocation of " + id + ".");
 
                     // Check for type errors in parameters
                     if (argType instanceof ErrorType)
@@ -111,12 +111,12 @@ public class FunCallNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
+    public String toPrint(int tab) {
         StringBuilder paramString = new StringBuilder();
 
         for (Node argument : argumentList)
-            paramString.append(argument.toPrint("")).append(" ");
+            paramString.append(argument.toPrint(tab + 1));
 
-        return string + "Call: " + id + "( Param: " + paramString + ") at nest level " + nestingUsage + "\n";
+        return "  ".repeat(tab) + "Call " + id + " (\n" + paramString + "  ".repeat(tab) + ")\n";
     }
 }

@@ -58,10 +58,10 @@ public class IfBodyExpNode extends IfBodyStmNode {
     }
 
     @Override
-    public String toPrint(String string) {
-        StringBuilder str = new StringBuilder(super.toPrint(string));
+    public String toPrint(int tab) {
+        StringBuilder str = new StringBuilder(super.toPrint(tab));
 
-        return str.toString().contains("do nothing") ? string + exp.toPrint("") + "\t" : str +
-                exp.toPrint("") + "\t";
+        return str.toString().contains("do nothing") ? exp.toPrint(tab) : str +
+                exp.toPrint(tab);
     }
 }

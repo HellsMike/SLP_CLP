@@ -74,7 +74,7 @@ public class Main {
                   System.out.println("\t" + error);
             } else {
                System.out.println("Visualizing AST...");
-               System.out.println(ast.toPrint(""));
+               System.out.println(ast.toPrint(0));
 
                // Type checking
                Node type = ast.typeCheck();
@@ -85,7 +85,7 @@ public class Main {
                   System.out.print("Type checking OK! ");
 
                   if (type != null)
-                     System.out.println("Type of the program is: " + type.toPrint("") + ".");
+                     System.out.println("Type of the program is: " + type.toPrint(0) + ".");
                   else
                      System.out.println("Program has no type.");
 

@@ -20,12 +20,7 @@ public class FunType extends Type {
     }
 
     @Override
-    public String toPrint(String string) {
-        StringBuilder types = new StringBuilder();
-
-        for (Type type : inputType)
-            types.append(type).append(" ");
-
-        return string + "Function Type:" + types + "-> " + outputType.toPrint("") + "\n";
+    public String toPrint(int tab) {
+        return outputType.toPrint(tab) + "\n";
     }
 }

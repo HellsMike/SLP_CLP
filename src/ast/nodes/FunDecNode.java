@@ -80,15 +80,17 @@ public class FunDecNode  implements Node {
     public Type typeCheck() {
         // Check for type errors in parameters
         for (ParamNode param : paramList) {
-            if (param.typeCheck() instanceof ErrorType)
-                return param.typeCheck();
+            Type paramType = param.typeCheck();
+            if (paramType instanceof ErrorType)
+                return paramType;
         }
 
         Type bodyType = body.typeCheck();
+        Type outType = funType.getOutputType();
 
         // If body type match with function return type return that type, otherwise return an error
-        return bodyType.isEqual(funType.getOutputType()) ? bodyType : new ErrorType("Function " + id +
-                " expected return type " + funType.getOutputType() + " instead of " + bodyType + ".");
+        return bodyType.isEqual(outType) ? bodyType : new ErrorType("Function " + id +
+                " expected return type " + outType.getClass() + " instead of " + bodyType.getClass() + ".");
     }
 
     /**
@@ -116,12 +118,12 @@ public class FunDecNode  implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
+    public String toPrint(int tab) {
         StringBuilder paramString = new StringBuilder();
 
         for (ParamNode param : paramList)
-            paramString.append(param.toPrint("")).append(" ");
+            paramString.append(param.toPrint(0)).append(" ");
 
-        return string + "Fun: " + id + "( "+ paramString + ")" + "\n" + body.toPrint("  ");
+        return "  ".repeat(tab) + "Fun " + id + ": " + paramString + "\n" + body.toPrint(tab + 1);
     }
 }

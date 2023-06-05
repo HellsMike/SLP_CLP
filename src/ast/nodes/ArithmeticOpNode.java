@@ -62,7 +62,7 @@ public abstract class ArithmeticOpNode implements Node {
     public abstract String codeGeneration();
 
     @Override
-    public String toPrint(String string) {
-        return string + operation + "\n" + left.toPrint(string + "  ") + right.toPrint(string + "  ");
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + operation + "\n" + left.toPrint(tab + 1) + right.toPrint(tab + 1);
     }
 }

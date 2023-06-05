@@ -40,6 +40,9 @@ public class IdNode implements Node {
         // Check if the variable is initialized
         else if (!entry.isInitialized())
             errors.add(new SemanticError("Id " + id + " used before initialization."));
+        // Check if variable has been initialized only in one if branch.
+        else if (entry.hasConditionWarning())
+            errors.add(new SemanticError("Id " + id + " may not be initialized."));
 
         return errors;
     }
@@ -74,7 +77,7 @@ public class IdNode implements Node {
     }
 
     @Override
-    public String toPrint(String string)  {
-        return string + "Id: " + id + " is at nest level " + entry.getNesting() + "\n";
+    public String toPrint(int tab)  {
+        return "  ".repeat(tab) + "Id " + id + "\n";
     }
 }

@@ -17,13 +17,17 @@ public class STEntry {
      */
     private final String label;
     /**
+     * Offset to frame pointer.
+     */
+    private final int offset;
+    /**
      * Keep track of the initialization state.
      */
     private boolean initialized;
     /**
-     * Offset to frame pointer.
+     * Keep track if variable is initialized in a if branch.
      */
-    private final int offset;
+    private boolean conditionInitializedWarning = false;
 
     /**
      * Constructor for variable entries.
@@ -71,6 +75,7 @@ public class STEntry {
         this.offset = entry.offset;
         this.label = entry.label;
         this.initialized = entry.initialized;
+        this.conditionInitializedWarning = entry.conditionInitializedWarning;
     }
 
 
@@ -103,6 +108,23 @@ public class STEntry {
      * Mark entry as initialized
      */
     public void initialize() {
+        initialized = true;
+    }
+
+    /**
+     * Check if entry is initialized only in one of the if branches.
+     *
+     * @return true if entry has condition warning, false otherwise.
+     */
+    public boolean hasConditionWarning() {
+        return conditionInitializedWarning;
+    }
+
+    /**
+     * Mark entry with condition warning.
+     */
+    public void markConditionWarning() {
+        conditionInitializedWarning = true;
         initialized = true;
     }
 }

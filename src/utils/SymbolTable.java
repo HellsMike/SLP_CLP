@@ -76,8 +76,9 @@ public class SymbolTable {
      *
      * @param id Identifier of the entry.
      * @param type Type of the entry.
+     * @return STEntry generated.
      */
-    public void add(String id, Type type) {
+    public STEntry add(String id, Type type) {
         int lastIndex = table.size() - 1;
         int offset = offsetList.get(lastIndex);
         STEntry entry = new STEntry(type, lastIndex, offset);
@@ -85,6 +86,8 @@ public class SymbolTable {
         scope.put(id, entry);
         table.set(lastIndex, scope);
         offsetList.set(lastIndex, (offset + 1));
+
+        return entry;
     }
 
     /**
@@ -93,8 +96,9 @@ public class SymbolTable {
      * @param id Identifier of the entry.
      * @param type Type of the entry.
      * @param label Function label for code generation.
+     * @return STEntry generated.
      */
-    public void add(String id, Type type, String label) {
+    public STEntry add(String id, Type type, String label) {
         int lastIndex = table.size() - 1;
         int offset = offsetList.get(lastIndex);
         STEntry entry = new STEntry(type, lastIndex, offset, label);
@@ -102,6 +106,8 @@ public class SymbolTable {
         scope.put(id, entry);
         table.set(lastIndex, scope);
         offsetList.set(lastIndex, (offset + 1));
+
+        return entry;
     }
 
     /**
@@ -125,32 +131,9 @@ public class SymbolTable {
     }
 
     /**
-     * Mark the entry as initialized and update the symbol table.
-     *
-     * @param entry The entry to initialize.
-     * @return Updated entry.
-     */
-    public STEntry initializeEntry(STEntry entry) {
-        HashMap<String, STEntry> scope = table.get(entry.getNesting());
-        int lastIndex = table.size() - 1;
-
-        // Get the id of the entry
-        for (String key : scope.keySet())
-            if (scope.get(key).equals(entry)) {
-                entry.initialize();
-
-                break;
-            }
-
-        table.set(entry.getNesting(), scope);
-
-        return entry;
-    }
-
-    /**
      * Get a list of identifiers of initialized entries.
      *
-     * @return List of identifiers.
+     * @return List of initialized entries.
      */
     public ArrayList<String> getInitializedEntries() {
         ArrayList<String> entryList = new ArrayList<>();

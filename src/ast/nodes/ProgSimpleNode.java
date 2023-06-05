@@ -60,7 +60,7 @@ public class ProgSimpleNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return "Prog\n" + exp.toPrint("  ");
+    public String toPrint(int tab) {
+        return "Prog\n" + exp.toPrint(tab + 1);
     }
 }

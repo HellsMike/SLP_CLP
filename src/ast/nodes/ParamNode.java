@@ -1,8 +1,10 @@
 package ast.nodes;
 
 import ast.types.ErrorType;
+import ast.types.IntType;
 import ast.types.Type;
 import ast.types.VoidType;
+import utils.STEntry;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -34,9 +36,9 @@ public class ParamNode implements Node {
         // Check if there is more than one parameter with the same identifier
         if (symbolTable.lookup(id, nestingLevel) == null) {
             // Add the identifier in the inner scope of the symbol table
-            symbolTable.add(id, type);
+            STEntry entry = symbolTable.add(id, type);
             // Set the entry as initialized
-            symbolTable.initializeEntry(symbolTable.lookup(id, nestingLevel));
+            entry.initialize();
         } else
             errors.add(new SemanticError("Id " + id + " passed more than one time as argument of a function."));
 
@@ -68,7 +70,9 @@ public class ParamNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + "Var " + id + "\n";
+    public String toPrint(int tab) {
+        String typeStr = type instanceof IntType ? "int" : "bool";
+
+        return typeStr + " " + id;
     }
 }

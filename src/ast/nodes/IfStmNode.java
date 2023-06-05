@@ -4,6 +4,7 @@ import ast.types.BoolType;
 import ast.types.ErrorType;
 import ast.types.Type;
 import utils.CodeGenSupport;
+import utils.STEntry;
 import utils.SemanticError;
 import utils.SymbolTable;
 
@@ -41,13 +42,30 @@ public class IfStmNode implements Node {
         errors.addAll(thenBranch.checkSemantics(symbolTable, nestingLevel));
         // Check for else branch semantic errors
         errors.addAll(elseBranch.checkSemantics(elseSymbolTable, nestingLevel));
+        // Get the lists of entries seen as initialized in the branches
         ArrayList<String> stInitialized = symbolTable.getInitializedEntries();
         ArrayList<String> estInitialized = elseSymbolTable.getInitializedEntries();
 
-        // Check if then branch and else branch initialized the same variables, otherwise the rest of the program is
-        // unpredictable
-        if (stInitialized.size() != estInitialized.size() || !stInitialized.containsAll(estInitialized))
-            errors.add(new SemanticError("Then branch and else branch must have the same variables initialized."));
+        // Check if then branch and else branch initialized the same variables
+        if (stInitialized.size() != estInitialized.size() || !stInitialized.containsAll(estInitialized)) {
+            // Make a list of all unique id initialized in ony one branch
+            ArrayList<String> difference1 = new ArrayList<>(stInitialized);
+            ArrayList<String> difference2 = new ArrayList<>(estInitialized);
+            difference1.removeAll(estInitialized);
+            difference2.removeAll(stInitialized);
+
+            ArrayList<STEntry> difference = new ArrayList<>();
+
+            for (String id : difference1)
+                difference.add(symbolTable.lookup(id));
+
+            for (String id : difference2)
+                difference.add(symbolTable.lookup(id));
+
+            // Mark entries with conditional warning
+            for (STEntry entry : difference)
+                entry.markConditionWarning();
+        }
 
         return errors;
     }
@@ -61,13 +79,15 @@ public class IfStmNode implements Node {
     public Type typeCheck() {
         // Check if condition is a boolean type
         if (conditionExp.typeCheck() instanceof BoolType) {
+            Type thenType = thenBranch.typeCheck();
             // Check for then branch type errors
-            if (thenBranch.typeCheck() instanceof ErrorType)
-                return thenBranch.typeCheck();
+            if (thenType instanceof ErrorType)
+                return thenType.typeCheck();
 
             // Check for else branch type errors
-            if (elseBranch.typeCheck() instanceof ErrorType)
-                return elseBranch.typeCheck();
+            Type elseType = elseBranch.typeCheck();
+            if (elseType instanceof ErrorType)
+                return elseType.typeCheck();
         } else
             return new ErrorType("Type error: if condition must be a boolean.");
 
@@ -97,8 +117,9 @@ public class IfStmNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        return string + "If " + conditionExp.toPrint("") + " ? " + thenBranch.toPrint("Then: ") +
-                thenBranch.toPrint("Else: ") + "\n";
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + "If " +  "\n" + conditionExp.toPrint(tab + 1) +
+                thenBranch.toPrint(tab + 1) +
+                elseBranch.toPrint(tab + 1);
     }
 }

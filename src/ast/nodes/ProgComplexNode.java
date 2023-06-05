@@ -2,6 +2,7 @@ package ast.nodes;
 
 import ast.types.ErrorType;
 import ast.types.Type;
+import ast.types.VoidType;
 import utils.CodeGenSupport;
 import utils.SemanticError;
 import utils.SymbolTable;
@@ -61,17 +62,21 @@ public class ProgComplexNode implements Node {
     @Override
     public Type typeCheck() {
         // Check for declarations type errors
-        for (Node declaration: declarationList)
-            if (declaration.typeCheck() instanceof ErrorType)
-                return declaration.typeCheck();
+        for (Node declaration : declarationList) {
+            Type decType = declaration.typeCheck();
+            if (decType instanceof ErrorType)
+                return decType;
+        }
 
         // Check for statements type errors
-        for (Node statement: statementList)
-            if (statement.typeCheck() instanceof ErrorType)
-                return statement.typeCheck();
+        for (Node statement : statementList) {
+            Type stmType = statement.typeCheck();
+            if (stmType instanceof ErrorType)
+                return stmType;
+        }
 
         // Check for expression type
-        return exp != null ? exp.typeCheck() : null;
+        return exp != null ? exp.typeCheck() : new VoidType();
     }
 
     /**
@@ -100,17 +105,17 @@ public class ProgComplexNode implements Node {
     }
 
     @Override
-    public String toPrint(String string) {
-        StringBuilder str = new StringBuilder(string + "Prog\n");
+    public String toPrint(int tab) {
+        StringBuilder str = new StringBuilder("Prog\n");
 
         for (Node declaration: declarationList)
-            str.append(declaration.toPrint("  "));
+            str.append(declaration.toPrint(tab + 1));
 
         for (Node statement: statementList)
-            str.append(statement.toPrint("  "));
+            str.append(statement.toPrint(tab + 1));
 
         if (exp != null)
-            str.append(exp.toPrint("  "));
+            str.append(exp.toPrint(tab + 1));
 
         return str.toString();
     }

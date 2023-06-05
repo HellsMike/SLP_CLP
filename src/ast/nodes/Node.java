@@ -33,5 +33,5 @@ public interface Node {
      */
     String codeGeneration();
 
-    String toPrint(String string);
+    String toPrint(int tab);
 }

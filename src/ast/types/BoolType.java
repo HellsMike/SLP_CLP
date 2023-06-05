@@ -2,7 +2,7 @@ package ast.types;
 
 public class BoolType extends Type {
     @Override
-    public String toPrint(String string) {
-        return string + "Bool ";
+    public String toPrint(int tab) {
+        return "  ".repeat(tab) + "Bool ";
     }
 }
