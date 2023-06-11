@@ -58,8 +58,10 @@ public class Main {
          // Generate abstract tree
          Node ast = visitor.visit(parser.prog());
 
+         // Used to mute errors if needed
+         boolean showError = true;
          // Check for lexical and syntax errors
-         if (handler.errorNumber() > 0) {
+         if (showError && handler.errorNumber() > 0) {
             System.out.println(handler);
             handler.toLog(filename);
          } else {
@@ -67,11 +69,11 @@ public class Main {
             ArrayList<SemanticError> errors = ast.checkSemantics(symbolTable, 0);
 
             // Check for semantic errors
-            if (errors.size() > 0) {
+            if (showError && errors.size() > 0) {
                System.out.println("You had " + errors.size() + " errors:");
 
                for (SemanticError error : errors)
-                  System.out.println("\t" + error);
+                  System.out.println("\n" + error);
             } else {
                System.out.println("Visualizing AST...");
                System.out.println(ast.toPrint(0));
@@ -79,7 +81,7 @@ public class Main {
                // Type checking
                Node type = ast.typeCheck();
 
-               if (type instanceof ErrorType)
+               if (showError && type instanceof ErrorType)
                   System.out.println("Type checking is WRONG!");
                else {
                   System.out.print("Type checking OK! ");
