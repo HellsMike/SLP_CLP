@@ -31,8 +31,9 @@ public class VarAssNode implements Node {
      */
     @Override
     public ArrayList<SemanticError> checkSemantics(SymbolTable symbolTable, int nestingLevel) {
-        ArrayList<SemanticError> errors = new ArrayList<>();
         this.nestingUsage = nestingLevel;
+        // Check for expression semantic errors
+        ArrayList<SemanticError> errors = new ArrayList<>(exp.checkSemantics(symbolTable, nestingLevel));
         // Get the symbol table entry
         STEntry entry = symbolTable.lookup(id);
 
@@ -44,9 +45,6 @@ public class VarAssNode implements Node {
             entry.initialize();
             this.entry = entry;
         }
-
-        // Check for expression semantic errors
-        errors.addAll(exp.checkSemantics(symbolTable, nestingLevel));
 
         return errors;
     }
